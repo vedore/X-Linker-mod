@@ -1,13 +1,19 @@
-apt upgrade
-apt update
-apt install wget
-apt install curl
-apt install less
-apt install nano
-apt install unzip
-apt install gawk
-apt install libxml2-utils 
-apt-get install xmlstarlet
+#!/usr/bin/env bash
+
+yes | apt upgrade
+yes | apt update
+yes | apt-get install make
+yes | apt install wget
+yes | apt install curl
+yes | apt install git
+yes | apt install less
+yes | apt install nano
+yes | apt install unzip
+yes | apt install gawk
+yes | apt install libxml2-utils 
+yes | apt-get install xmlstarlet
+yes | apt-get gzip
+yes | apt-get install -y default-jdk && apt-get autoclean -y
 
 # Install Pip requirements
 pip install -r requirements.txt 
@@ -25,13 +31,15 @@ cd abbreviation_detector/
 wget https://github.com/ncbi-nlp/Ab3P/archive/refs/heads/master.zip
 unzip master.zip
 mv Ab3P-master Ab3P
+rm master.zip
 
 wget https://github.com/ncbi-nlp/NCBITextLib/archive/refs/heads/master.zip
 unzip master.zip
 mv NCBITextLib-master NCBITextLib
+rm master.zip
 
 #Install 
-apt-get install g++
+yes | apt-get install g++
 
 # 1. Install NCBITextLib
 cd NCBITextLib/lib/

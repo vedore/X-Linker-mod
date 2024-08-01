@@ -1,54 +1,29 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+
 mkdir -p data/
 cd data/
 
 #-----------------------------------------------------------------------------
 #                                  KBs
 #-----------------------------------------------------------------------------
-mkdir -p kbs/
-cd kbs/
-
-# MEDIC vocabulary (version: Feb 28 2024 10:59 EST)
-mkdir -p medic/
-cd medic
-wget https://ctdbase.org/reports/CTD_diseases.tsv.gz
-gzip -d CTD_diseases.tsv.gz
-cd ../
-
-#CTD-Chemicals (version: Feb 28 2024 10:59 EST)
-mkdir -p ctd_chemicals
-cd ctd_chemicals
-wget https://ctdbase.org/reports/CTD_chemicals.tsv.gz
-gzip -d CTD_chemicals.tsv.gz
-cd ../
-
-#CTD-Gene (version: Feb 28 2024 11:00 EST)
-mkdir ctd_genes
-cd ctd_genes
-wget https://ctdbase.org/reports/CTD_genes.tsv.gz
-gzip -d CTD_genes.tsv.gz
-cd ../
-
-# NCBI taxon (version: 2024-03-28 11:27)
-
-cd ../
-
-cd ../
+wget https://zenodo.org/records/13152812/files/kbs.zip?download=1
+unzip 'kbs.zip?download=1'
+rm 'kbs.zip?download=1'
 
 #-----------------------------------------------------------------------------
 #Generate files storing the info related to the the following KOS:
-#- CTD-Chemicals
-#- CTD-Diseases
-#- NCBITaxon
-#- CTD-Genes
+# CTD-Chemicals
+# CTD-Diseases
+# CTD-Genes
 
 #Output directory is "data/kbs/"
-./src/bash/generate_kbs.sh
-
+cd ../
+bash src/bash/generate_kbs.sh
 
 #-----------------------------------------------------------------------------
 #                                  DATASETS
 #-----------------------------------------------------------------------------
+cd data/
 mkdir datasets/
 cd datasets/
 
@@ -91,6 +66,18 @@ unzip NLM-Chem-corpus.zip
 rm NLM-Chem-corpus.zip
 mv FINAL_v1 nlm_chem
 
+#------------------------------------------
+#The following datasets were not used in evaluation, but the respective documents
+#were removed from the training data to allow a future evaluation
+
+# MedMentions
+
+# CRAFT corpus
+
+# LINNAEUS
+
+#------------------------------------------
+
 cd ../../
 
 #-----------------------------------------------------------------------------
@@ -117,13 +104,13 @@ sed -i 's/SpecificDisease/Disease/g' data/datasets/ncbi_disease/test_Disease.txt
 sed -i 's/DiseaseClass/Disease/g' data/datasets/ncbi_disease/test_Disease.txt
 sed -i 's/CompositeMention/Disease/g' data/datasets/ncbi_disease/test_Disease.txt
 mkdir data/datasets/ncbi_disease/txt/
-awk -F'|' '/\|t\|/ || /\|a\|/ {print $3 > $1}' data/datasets/ncbi_disease/NCBItestset_corpus.txt
+awk -F'|' '/\|t\|/ || /\|a\|/ {print $3 > "data/datasets/ncbi_disease/txt/" $1}' data/datasets/ncbi_disease/NCBItestset_corpus.txt
 
 #NLM-Chem***
 python -c "from src.python.utils import convert_nlm_chem_2_pubtator;convert_nlm_chem_2_pubtator()"
 awk -F'\t' '!/\|t\|/ && !/\|a\|/ && !/\|p\|/ && !/\|f\|/ && ($0 ~ /Chemical/)' data/datasets/nlm_chem/test_pubtator.txt > data/datasets/nlm_chem/test_Chemical.txt
 mkdir data/datasets/nlm_chem/txt/
-awk -F'|' '/\|t\|/ || /\|a\|/ || /\|p\|/ || /\|f\|/ {print $3 > $1}' data/datasets/nlm_chem/test_Chemical.txt
+awk -F'|' '/\|t\|/ || /\|a\|/ || /\|p\|/ || /\|f\|/ {print $3 > "data/datasets/nlm_chem/txt/" $1}' data/datasets/nlm_chem/test_Chemical.txt
 
 
 #---------------------------------------------------------------------------
@@ -142,10 +129,11 @@ python -c "from src.python.utils import create_datasets_pmids_list;create_datase
 #---------------------------------------------------------------------------
 # Get PECOS-EL models
 #---------------------------------------------------------------------------
-wget https://zenodo.org/records/12704543/files/models.zip?download=1
+cd data
+
+wget https://zenodo.org/records/13152812/files/models.zip?download=1
 unzip 'models.zip?download=1'
 rm 'models.zip?download=1'
-
 
 #-----------------------------------------------------------------------------
 #  Get SapBERT models
@@ -153,3 +141,5 @@ rm 'models.zip?download=1'
 wget https://zenodo.org/records/12704543/files/sapbert.zip?download=1
 unzip 'sapbert.zip?download=1'
 rm 'sapbert.zip?download=1'
+
+cd ../

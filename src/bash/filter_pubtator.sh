@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Create create a version of the PubTator annotations file containing only 
 # the relevant annotations (Disease, Chemical)
 

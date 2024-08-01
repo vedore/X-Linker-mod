@@ -16,6 +16,16 @@ Get the already generated training files:
 ./src/bash/get_training_data.sh
 ```
 
+
+Download KB data:
+
+```
+./src/bash/get_data_to_build.sh
+```
+
+NOTE: If you generate a new training dataset using recent versions of the KB, you will need to train new models. The models that are provided were trained using older versions of the KBs.
+
+
 ## Generate Training data files
 If you download the Pubtator annotations and intend to generate the training files from scratch (if not skip this step):
 
@@ -47,7 +57,7 @@ Or:
 To train a PECOS-EL models in the previously referred training files:
 
 ```
-python src/python/xlinker/train.py -ent_type <> -kb <> -model <> -dataset <> -ninstances <> -clustering <>
+python src/python/xlinker/train_pecos.py -ent_type <> -kb <> -model <> -dataset <> -ninstances <> -clustering <>
 ```
 
 Arguments: 
