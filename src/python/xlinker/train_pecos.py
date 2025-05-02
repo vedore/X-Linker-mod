@@ -1,16 +1,11 @@
 """Train the PECOS-EL Disease or Chemical model"""
 import argparse
 import copy
-import json
 import os
 import logging
 import torch
 
 # import wandb
-from pecos.utils.featurization.text.preprocess import Preprocessor
-from pecos.xmc.xtransformer.model import XTransformer
-from pecos.xmc.xtransformer.module import MLProblemWithText
-from src.python.xtransformer.utils import get_cluster_chain
 from logging.handlers import RotatingFileHandler
 
 # wandb.login()
@@ -77,44 +72,6 @@ logging.info("\n------------------------------------------")
 
 logging.info(f"CUDA is available:{torch.cuda.is_available()}")
 logging.info(f"CUDA DEVICE COUNT:{torch.cuda.device_count()}")
-
-# ------------------------------------------------------------
-# Import training parameters from train_params.json
-# ------------------------------------------------------------
-logging.info("Loading training parameters")
-params_filepath = f"{model_dir}/train_params.json"
-
-if not os.path.exists(params_filepath):
-    logging.info(
-        "No train_params.json file found! Copying from data/models/trained/train_params.json"
-    )
-    os.system(
-        f"cp data/models/trained/train_params.json data/models/trained/{RUN_NAME}/train_params.json"
-    )
-
-with open(params_filepath, "r", encoding="utf-8") as params_file:
-    params = json.load(params_file)
-    params_file.close()
-
-# Path to download the corresponding model from the huggingFace repository
-model_maps = {
-    "biobert": "dmis-lab/biobert-base-cased-v1.2",
-    "scibert": "allenai/scibert_scivocab_cased",
-    "pubmedbert": "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext",
-}
-
-model_path = model_maps[args.model]
-params["train_params"]["matcher_params_chain"]["model_shortcut"] = model_path
-params["train_params"]["matcher_params_chain"]["num_train_epochs"] = args.epochs
-params["train_params"]["matcher_params_chain"]["batch_size"] = args.batch_size
-params["train_params"]["matcher_params_chain"][
-    "batch_gen_workers"
-] = args.batch_gen_workers
-
-# Import training parameters from params.json
-# Parameters explanation: https://github.com/amzn/pecos/blob/cef885f2014a4e4ca2ebb28350317b0536e9ff45/pecos/xmc/xlinear/model.py#L24
-# XR-Transformer: https://github.com/amzn/pecos/tree/cef885f2014a4e4ca2ebb28350317b0536e9ff45/pecos/xmc/xtransformer
-train_params = XTransformer.TrainParams.from_dict(params["train_params"])
 
 # ------------------------------------------------------------
 # Parse training data
