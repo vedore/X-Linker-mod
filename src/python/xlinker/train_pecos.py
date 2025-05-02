@@ -95,7 +95,7 @@ else:
         train_filepath = f"{DATA_DIR}/Chemical/train_Chemical.txt"
 
 parsed_train_data = Preprocessor.load_data_labels_from_file(
-    train_filepath, label_text_path=f"{KB_DIR}/labels.txt"
+    train_filepath, f"{KB_DIR}/labels.txt"
 )
 
 logging.info(f"Parse train file: {train_filepath}")
