@@ -102,7 +102,7 @@ parsed_train_data = Preprocessor().load_data_labels_from_file(
 
 logging.info(f"Parse train file: {train_filepath}")
 
-Y_train = parsed_train_data["labels"]
+Y_train = parsed_train_data["labels_matrix"]
 X_train = parsed_train_data["corpus"]
 
 # Use training label frequency scores as costs -> build relevance matrix
