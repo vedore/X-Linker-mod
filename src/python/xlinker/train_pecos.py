@@ -96,7 +96,7 @@ else:
 
 labels_filepath = f"{KB_DIR}/labels.txt"
 
-parsed_train_data = Preprocessor.load_data_labels_from_file(
+parsed_train_data = Preprocessor().load_data_labels_from_file(
     train_filepath, labels_filepath
 )
 
