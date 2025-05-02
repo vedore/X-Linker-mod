@@ -94,8 +94,10 @@ else:
     elif args.ent_type == "Chemical":
         train_filepath = f"{DATA_DIR}/Chemical/train_Chemical.txt"
 
+labels_filepath = f"{KB_DIR}/labels.txt"
+
 parsed_train_data = Preprocessor.load_data_labels_from_file(
-    train_filepath, f"{KB_DIR}/labels.txt"
+    train_filepath, labels_filepath
 )
 
 logging.info(f"Parse train file: {train_filepath}")
