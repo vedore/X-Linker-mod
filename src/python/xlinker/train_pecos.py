@@ -5,8 +5,14 @@ import os
 import logging
 import torch
 
+import time
+import numpy as np
+
 # import wandb
 from logging.handlers import RotatingFileHandler
+
+from xmr4el.featurization.preprocessor import Preprocessor
+from xmr4el.xmr.xmr_pipeline import XMRPipeline
 
 # wandb.login()
 
@@ -14,7 +20,7 @@ from logging.handlers import RotatingFileHandler
 # Check the available GPUs
 # ------------------------------------------------------------
 # See https://discuss.pytorch.org/t/solved-make-sure-that-pytorch-using-gpu-to-compute/4870/6
-# torch.cuda.is_available()
+# torch.cuda.is_available() 
 
 
 # ------------------------------------------------------------
@@ -88,7 +94,7 @@ else:
     elif args.ent_type == "Chemical":
         train_filepath = f"{DATA_DIR}/Chemical/train_Chemical.txt"
 
-parsed_train_data = Preprocessor.load_data_from_file(
+parsed_train_data = Preprocessor.load_data_labels_from_file(
     train_filepath, label_text_path=f"{KB_DIR}/labels.txt"
 )
 
@@ -107,66 +113,125 @@ logging.info(
 # ------------------------------------------------------------
 # Feature extraction: build TF-IDF model with training corpus
 # ------------------------------------------------------------
-vectorizer_config = {
-    "type": "tfidf",
-    "kwargs": {
-        "base_vect_configs": [
-            {
-                "ngram_range": [1, 2],
-                "max_df_ratio": 0.98,
-                "analyzer": "word",
-                "buffer_size": 0,
-                "threads": 30,
-            },
-        ],
-    },
-}
+# vectorizer_config = {
+#     "type": "tfidf",
+#     "kwargs": {
+#         "base_vect_configs": [
+#             {
+#                 "ngram_range": [1, 2],
+#                 "max_df_ratio": 0.98,
+#                 "analyzer": "word",
+#                 "buffer_size": 0,
+#                 "threads": 30,
+#             },
+#         ],
+#     },
+# }
+
+n_features = 12
+
+vectorizer_config = {"type": "tfidf", "kwargs": {"max_features": n_features}}
 
 tf_idf_filepath = f"{model_dir}/tfidf_model"
 
-if os.path.exists(tf_idf_filepath):
-    logging.info("Loading TF-IDF model from disk")
-    tfidf_model = Preprocessor.load(tf_idf_filepath)
+# if os.path.exists(tf_idf_filepath):
+#     logging.info("Loading TF-IDF model from disk")
+#     tfidf_model = xmr4el.Preprocessor.load(tf_idf_filepath)
 
-else:
-    logging.info("Training TF-IDF model")
-    tfidf_model = Preprocessor.train(X_train, vectorizer_config)
-    tfidf_model.save(tf_idf_filepath)
-    logging.info("Saved TF-IDF model")
+# else:
+#     logging.info("Training TF-IDF model")
+#     tfidf_model = Preprocessor.train(X_train, vectorizer_config)
+#     tfidf_model.save(tf_idf_filepath)
+#     logging.info("Saved TF-IDF model")
 
-X_train_feat = tfidf_model.predict(X_train)
-logging.info(
-    f"Constructed TRAINING feature matrix with shape={X_train_feat.shape} and nnz={X_train_feat.nnz}"
-)
 
-del tfidf_model
+# X_train_feat = tfidf_model.predict(X_train)
+# logging.info(
+#     f"Constructed TRAINING feature matrix with shape={X_train_feat.shape} and nnz={X_train_feat.nnz}"
+# )
+
+# del tfidf_model
 
 # ------------------------------------------------------------
 # Construct label hierarchy
 # see https://github.com/amzn/pecos/blob/2283da828b9ce6061ca2125ff62d8a37c934550f/pecos/xmc/base.py#L1827
 # -----------------------------------------------------------------
-logging.info(f"Building cluster chain with method {args.clustering}")
+# logging.info(f"Building cluster chain with method {args.clustering}")
 
-cluster_chain_filepath = f"{model_dir}/cluster_chain_{args.clustering}"
+# cluster_chain_filepath = f"{model_dir}/cluster_chain_{args.clustering}"
 
-Z_filepath = None
+# Z_filepath = None
 
-if args.clustering == "pifa_lf":
-    Z_filepath = f"data/kbs/{args.kb}/Z_{args.kb}_300_dim_20.npz"
+# if args.clustering == "pifa_lf":
+#     Z_filepath = f"data/kbs/{args.kb}/Z_{args.kb}_300_dim_20.npz"
 
-cluster_chain = get_cluster_chain(
-    X=X_train,
-    X_feat=X_train_feat,
-    Y=Y_train,
-    method=args.clustering,
-    cluster_chain_filepath=cluster_chain_filepath,
-    Z_filepath=Z_filepath,
-)
+# cluster_chain = get_cluster_chain(
+#     X=X_train,
+#     X_feat=X_train_feat,
+#     Y=Y_train,
+#     method=args.clustering,
+#     cluster_chain_filepath=cluster_chain_filepath,
+#     Z_filepath=Z_filepath,
+# )
 
 # ------------------------------------------------------------
 # Train XR-Transformer model
 # ------------------------------------------------------------
 logging.info("Training model")
+
+onnx_directory = "test/test_data/processed/vectorizer/biobert_onnx_cpu.onnx"
+
+start = time.time()
+
+n_features = 12
+
+vectorizer_config = {"type": "tfidf", "kwargs": {"max_features": n_features}}
+    
+transformer_config = {
+    "type": "biobert",
+    "kwargs": {"batch_size": 400, "onnx_directory": onnx_directory},
+}
+
+clustering_config = {
+    "type": "sklearnminibatchkmeans",
+    "kwargs": {"random_state": 0},
+}
+
+classifier_config = {
+    "type": "sklearnlogisticregression",
+    "kwargs": {"n_jobs": -1, "random_state": 0},
+}
+
+min_leaf_size = 10
+depth = 3
+
+training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
+
+trn_corpus = Preprocessor.load_data_from_file(train_filepath=training_file)
+
+htree = XMRPipeline.execute_pipeline(
+    trn_corpus,
+    vectorizer_config,
+    transformer_config,
+    clustering_config,
+    classifier_config,
+    n_features=n_features,  # Number of Features
+    max_n_clusters=16,
+    min_n_clusters=6,
+    min_leaf_size=min_leaf_size,
+    depth=depth,
+    dtype=np.float32,
+)
+
+# Print the tree structure
+print(htree)
+
+# Save the tree
+save_dir = os.path.join(os.getcwd(), "test/test_data/saved_trees")  # Ensure this path is correct and writable
+htree.save(save_dir)
+
+end = time.time()
+print(f"{end - start} secs of running")
 
 # start a new wandb run to track this script
 # wandb.init(
@@ -177,15 +242,15 @@ logging.info("Training model")
 #    config=train_params
 # )
 
-train_problem = MLProblemWithText(X_train, Y_train, X_feat=X_train_feat)
+# train_problem = MLProblemWithText(X_train, Y_train, X_feat=X_train_feat)
 
-custom_xtf = XTransformer.train(
-    train_problem,
-    R=R_train,
-    clustering=cluster_chain,
-    train_params=train_params,
-    verbose_level=3,
-)
+# custom_xtf = XTransformer.train(
+#     train_problem,
+#     R=R_train,
+#     clustering=cluster_chain,
+#     train_params=train_params,
+#     verbose_level=3,
+# )
 
 logging.info("Training completed!")
-custom_xtf.save(f"{model_dir}/xtransformer")
+# custom_xtf.save(f"{model_dir}/xtransformer")
