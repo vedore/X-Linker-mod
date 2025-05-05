@@ -207,12 +207,13 @@ classifier_config = {
 min_leaf_size = 10
 depth = 3
 
-training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
+# training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
-trn_corpus = Preprocessor.load_data_from_file(train_filepath=training_file)
+# trn_corpus = Preprocessor.load_data_from_file(train_filepath=training_file)
 
 htree = XMRPipeline.execute_pipeline(
-    trn_corpus,
+    X_train,
+    Y_train,
     vectorizer_config,
     transformer_config,
     clustering_config,
