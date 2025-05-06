@@ -185,7 +185,7 @@ onnx_directory = "test/test_data/processed/vectorizer/biobert_onnx_cpu.onnx"
 
 start = time.time()
 
-n_features = 12
+n_features = 500
 
 vectorizer_config = {"type": "tfidf", "kwargs": {"max_features": n_features}}
     

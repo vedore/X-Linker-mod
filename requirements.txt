@@ -8,5 +8,6 @@ scipy
 pandas
 numpy==1.26.3
 
+
 #Optional: install wandb to monitor model training
 wandb
