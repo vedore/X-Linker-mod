@@ -21,6 +21,7 @@ from src.python.utils import (
 from tqdm import tqdm
 
 from xmr4el.xmr.xmr_tree import XMRTree
+from xmr4el.xmr.xmr_pipeline import XMRPipeline
 
 # Parse arguments
 parser = ArgumentParser()
@@ -47,7 +48,7 @@ args = parser.parse_args()
 
 # train_disease_100
 trained_xtree = XMRTree.load(
-    "test/test_data/saved_trees/XMRTree_2025-05-07_10-23-32"
+    "test/test_data/saved_trees/XMRTree_2025-05-07_15-26-50/"
 )
 
 # ----------------------------------------------------------------------------
@@ -87,9 +88,19 @@ print("Test instances loaded!")
 # ----------------------------------------------------------------------------
 """Change here"""
 
-x_linker_preds = custom_xtf.predict(
-    test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
-)
+onnx_directory = "test/test_data/processed/vectorizer/biobert_onnx_cpu.onnx"
+
+transformer_config = {
+    "type": "biobert",
+    "kwargs": {"batch_size": 400, "onnx_directory": onnx_directory},
+}
+
+x_linker_preds = XMRPipeline.inference(trained_xtree, test_input, transformer_config, k=args.top_k)
+
+# x_linker_preds = custom_xtf.predict(
+#     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
+# )
+
 print("Linking test instances...")
 
 output = []
