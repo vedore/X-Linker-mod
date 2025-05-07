@@ -104,7 +104,7 @@ logging.info(f"Parse train file: {train_filepath}")
 
 Y_train = parsed_train_data["labels_matrix"]
 X_train = parsed_train_data["corpus"]
-label_enconder = parsed_train_data["label_enconder"]
+label_enconder = parsed_train_data["label_encoder"]
 
 # Use training label frequency scores as costs -> build relevance matrix
 R_train = copy.deepcopy(Y_train)
