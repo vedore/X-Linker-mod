@@ -1,11 +1,11 @@
 """Utility functions for PECOS-EL models"""
 import os
-from pecos.xmc import Indexer, LabelEmbeddingFactory
-from pecos.utils.cluster_util import ClusterChain
-from pecos.utils import smat_util
-from pecos.utils.featurization.text.preprocess import Preprocessor
-from pecos.utils.cluster_util import ClusterChain
-from pecos.xmc.xtransformer.model import XTransformer
+# from pecos.xmc import Indexer, LabelEmbeddingFactory
+# from pecos.utils.cluster_util import ClusterChain
+# from pecos.utils import smat_util
+# from pecos.utils.featurization.text.preprocess import Preprocessor
+# from pecos.utils.cluster_util import ClusterChain
+# from pecos.xmc.xtransformer.model import XTransformer
 from src.python.utils import parse_json, parse_dataset, add_predicted_kb_identifers
 from src.python.kbs import KnowledgeBase
 from src.python.xlinker.candidates import map_to_kb, output_candidates_file
