@@ -1,6 +1,9 @@
 """Script to evaluate PECOS-EL and X-Linker in datasets"""
-import pandas as pd
+
 import os
+import pandas as pd
+import src.python.xlinker.ppr as ppr
+
 from argparse import ArgumentParser, BooleanOptionalAction
 from src.python.xlinker.utils import (
     load_model,
@@ -8,13 +11,16 @@ from src.python.xlinker.utils import (
     process_pecos_preds,
     apply_pipeline_to_mention,
 )
+
 from src.python.utils import (
     get_dataset_abbreviations,
     prepare_input,
     calculate_topk_accuracy,
 )
-import src.python.xlinker.ppr as ppr
+
 from tqdm import tqdm
+
+from xmr4el.xmr.xmr_tree import XMRTree
 
 # Parse arguments
 parser = ArgumentParser()
@@ -35,8 +41,14 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Load and setup model to apply
 # ----------------------------------------------------------------------------
-custom_xtf, tfidf_model, cluster_chain = load_model(args.model_dir, args.clustering)
-print("model loaded!")
+# custom_xtf, tfidf_model, cluster_chain = load_model(args.model_dir, args.clustering)
+# print("model loaded!")
+"""Load the tree"""
+
+# train_disease_100
+trained_xtree = XMRTree.load(
+    "test/test_data/saved_trees/XMRTree_2025-05-07_10-23-32"
+)
 
 # ----------------------------------------------------------------------------
 # Load KB info
@@ -73,6 +85,8 @@ print("Test instances loaded!")
 # ----------------------------------------------------------------------------
 # Apply model to test instances
 # ----------------------------------------------------------------------------
+"""Change here"""
+
 x_linker_preds = custom_xtf.predict(
     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
 )
