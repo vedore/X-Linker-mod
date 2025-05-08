@@ -103,6 +103,8 @@ x_linker_preds = XMRPipeline.inference(trained_xtree, test_input, transformer_co
 
 # [[1, 2, 3, 4, 5]]
 
+print(x_linker_preds, x_linker_preds.shape)
+
 print("Linking test instances...")
 
 output = []
