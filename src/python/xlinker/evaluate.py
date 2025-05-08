@@ -48,7 +48,7 @@ args = parser.parse_args()
 
 # train_disease_100
 trained_xtree = XMRTree.load(
-    "test/test_data/saved_trees/XMRTree_2025-05-07_15-26-50/"
+    "test/test_data/saved_trees/XMRTree_2025-05-08_14-25-57/"
 )
 
 # ----------------------------------------------------------------------------
@@ -100,6 +100,8 @@ x_linker_preds = XMRPipeline.inference(trained_xtree, test_input, transformer_co
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
 # )
+
+# [[1, 2, 3, 4, 5]]
 
 print("Linking test instances...")
 
