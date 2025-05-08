@@ -48,7 +48,7 @@ args = parser.parse_args()
 
 # train_disease_100
 trained_xtree = XMRTree.load(
-    "test/test_data/saved_trees/XMRTree_2025-05-08_14-25-57/"
+    "test/test_data/saved_trees/XMRTree_2025-05-08_15-16-22"
 )
 
 # ----------------------------------------------------------------------------
