@@ -21,7 +21,7 @@ from src.python.utils import (
 from tqdm import tqdm
 
 from xmr4el.xmr.xmr_tree import XMRTree
-from xmr4el.xmr.xmr_pipeline import XMRPipeline
+from xmr4el.predict.predict import XMRPredict
 
 # Parse arguments
 parser = ArgumentParser()
@@ -95,7 +95,7 @@ transformer_config = {
     "kwargs": {"batch_size": 400, "onnx_directory": onnx_directory},
 }
 
-x_linker_preds = XMRPipeline.inference(trained_xtree, test_input, transformer_config, k=args.top_k)
+x_linker_preds = XMRPredict.inference(trained_xtree, test_input, transformer_config, k=args.top_k)
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
