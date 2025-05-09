@@ -47,9 +47,7 @@ args = parser.parse_args()
 """Load the tree"""
 
 # train_disease_100
-trained_xtree = XMRTree.load(
-    "test/test_data/saved_trees/XMRTree_2025-05-08_15-16-22"
-)
+trained_xtree = XMRTree.load(args.model_dir)
 
 # ----------------------------------------------------------------------------
 # Load KB info
