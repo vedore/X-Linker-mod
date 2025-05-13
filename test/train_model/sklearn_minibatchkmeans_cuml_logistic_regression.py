@@ -201,7 +201,7 @@ clustering_config = {
 }
 
 classifier_config = {
-    "type": "cumllogistcregression",
+    "type": "cumllogisticregression",
     "kwargs": {"random_state": 0},
 }
 
