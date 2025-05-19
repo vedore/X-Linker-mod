@@ -90,7 +90,6 @@ Arguments:
 Example for BC5CDR-Disease dataset:
 
 ```
-python src/python/xlinker/evaluate.py -dataset bc5cdr -ent_type Disease -kb medic -model_dir data/models/trained/disease_200_1ep -top_k 2 --abbrv --pipeline --threshold 0.15 --ppr
 ```
 
 

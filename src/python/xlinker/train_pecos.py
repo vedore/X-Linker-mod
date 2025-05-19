@@ -200,8 +200,14 @@ clustering_config = {
     "kwargs": {"random_state": 0},
 }
 
+# classifier_config = {
+#     "type": "sklearnlogisticregression",
+#     "kwargs": {"n_jobs": -1, "random_state": 0},
+# }
+
 classifier_config = {
-    "type": "sklearnlogisticregression",
+    # "type": "sklearnlogisticregression",
+    "type": "sklearnrandomforestclassifier",
     "kwargs": {"n_jobs": -1, "random_state": 0},
 }
 
