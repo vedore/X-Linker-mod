@@ -210,7 +210,7 @@ classifier_config = {
     "type": "sklearnrandomforestclassifier",
     "kwargs": {"n_jobs": -1, 
                "random_state": 0, 
-               "n_estimatores":300,
+               "n_estimators":300,
                "max_depth":20,
                "min_samples_leaf":5,
                "max_features":'sqrt'},
