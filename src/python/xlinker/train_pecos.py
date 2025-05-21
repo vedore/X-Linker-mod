@@ -212,7 +212,7 @@ classifier_config = {
 }
 
 min_leaf_size = 10
-depth = 3
+depth = 2
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
