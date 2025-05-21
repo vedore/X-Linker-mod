@@ -20,7 +20,7 @@ from src.python.utils import (
 
 from tqdm import tqdm
 
-from xmr4el.xmr.xmr_tree import XMRTree
+from xmr4el.xmr.tree import XMRTree
 from xmr4el.predict.predict import XMRPredict
 
 # Parse arguments
