@@ -197,7 +197,7 @@ transformer_config = {
 
 clustering_config = {
     "type": "sklearnminibatchkmeans",
-    "kwargs": {"random_state": 0},
+    "kwargs": {"random_state": 0, "max_iter": 300},
 }
 
 # classifier_config = {
@@ -208,7 +208,12 @@ clustering_config = {
 classifier_config = {
     # "type": "sklearnlogisticregression",
     "type": "sklearnrandomforestclassifier",
-    "kwargs": {"n_jobs": -1, "random_state": 0},
+    "kwargs": {"n_jobs": -1, 
+               "random_state": 0, 
+               "n_estimatores":300,
+               "max_depth":20,
+               "min_samples_leaf":5,
+               "max_features":'sqrt'},
 }
 
 min_leaf_size = 10
