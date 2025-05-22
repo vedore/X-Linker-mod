@@ -186,9 +186,7 @@ onnx_directory = "test/test_data/processed/vectorizer/biobert_onnx_cpu.onnx"
 
 start = time.time()
 
-n_features = 500
-
-vectorizer_config = {"type": "tfidf", "kwargs": {"max_features": n_features}}
+vectorizer_config = {"type": "tfidf", "kwargs": {}}
     
 transformer_config = {
     "type": "biobert",
@@ -222,8 +220,8 @@ classifier_config = {
 #                "max_features":'sqrt'},
 # }
 
-min_leaf_size = 10
-depth = 2
+min_leaf_size = 20
+depth = 3
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
