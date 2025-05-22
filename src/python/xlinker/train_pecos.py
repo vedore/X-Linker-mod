@@ -200,21 +200,27 @@ clustering_config = {
     "kwargs": {"random_state": 0, "max_iter": 300},
 }
 
-# classifier_config = {
-#     "type": "sklearnlogisticregression",
-#     "kwargs": {"n_jobs": -1, "random_state": 0},
-# }
-
 classifier_config = {
-    # "type": "sklearnlogisticregression",
-    "type": "sklearnrandomforestclassifier",
+    "type": "sklearnlogisticregression",
     "kwargs": {"n_jobs": -1, 
-               "random_state": 0, 
-               "n_estimators":300,
-               "max_depth":20,
-               "min_samples_leaf":5,
-               "max_features":'sqrt'},
+               "random_state": 0,
+               "penalty":"l2",           
+               "C": 1.0,               
+               "solver":"lbfgs",    
+               "multi_class":"multinomial",
+               "max_iter":1000},
 }
+
+# classifier_config = {
+#     # "type": "sklearnlogisticregression",
+#     "type": "sklearnrandomforestclassifier",
+#     "kwargs": {"n_jobs": -1, 
+#                "random_state": 0, 
+#                "n_estimators":300,
+#                "max_depth":20,
+#                "min_samples_leaf":5,
+#                "max_features":'sqrt'},
+# }
 
 min_leaf_size = 10
 depth = 2
