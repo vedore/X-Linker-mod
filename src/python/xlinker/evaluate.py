@@ -20,8 +20,8 @@ from src.python.utils import (
 
 from tqdm import tqdm
 
-from xmr4el.xmr.tree import XMRTree
-from xmr4el.predict.predict import XMRPredict
+from xmr4el.xmr.skeleton import Skeleton
+from xmr4el.predict.predict import Predict
 
 # Parse arguments
 parser = ArgumentParser()
@@ -47,7 +47,7 @@ args = parser.parse_args()
 """Load the tree"""
 
 # train_disease_100
-trained_xtree = XMRTree.load(args.model_dir)
+trained_xtree = Skeleton.load(args.model_dir)
 
 # ----------------------------------------------------------------------------
 # Load KB info
@@ -93,7 +93,7 @@ transformer_config = {
     "kwargs": {"batch_size": 400, "onnx_directory": onnx_directory},
 }
 
-x_linker_preds = XMRPredict.inference(trained_xtree, test_input, transformer_config, k=args.top_k)
+x_linker_preds = Predict.inference(trained_xtree, test_input, transformer_config, k=args.top_k)
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k

@@ -12,7 +12,7 @@ import numpy as np
 from logging.handlers import RotatingFileHandler
 
 from xmr4el.featurization.preprocessor import Preprocessor
-from xmr4el.xmr.pipeline import XMRPipeline
+from xmr4el.xmr.skeleton_builder import SkeletonBuilder
 
 # wandb.login()
 
@@ -131,12 +131,6 @@ logging.info(
 #     },
 # }
 
-n_features = 12
-
-vectorizer_config = {"type": "tfidf", "kwargs": {"max_features": n_features}}
-
-tf_idf_filepath = f"{model_dir}/tfidf_model"
-
 # if os.path.exists(tf_idf_filepath):
 #     logging.info("Loading TF-IDF model from disk")
 #     tfidf_model = xmr4el.Preprocessor.load(tf_idf_filepath)
@@ -186,19 +180,26 @@ onnx_directory = "test/test_data/processed/vectorizer/biobert_onnx_cpu.onnx"
 
 start = time.time()
 
-max_features = 5000
+min_leaf_size = 20
+depth = 3
+n_features = 2500
+max_n_clusters = 16
+min_n_clusters = 6
 
-vectorizer_config = {"type": "tfidf", "kwargs": {"max_features":max_features}}
+vectorizer_config = {
+    "type": "tfidf", 
+    "kwargs": {"max_features":n_features}
+    }
     
 transformer_config = {
     "type": "biobert",
     "kwargs": {"batch_size": 400, "onnx_directory": onnx_directory},
-}
+    }
 
 clustering_config = {
     "type": "sklearnminibatchkmeans",
     "kwargs": {"random_state": 0, "max_iter": 300},
-}
+    }
 
 classifier_config = {
     "type": "sklearnlogisticregression",
@@ -207,42 +208,29 @@ classifier_config = {
                "penalty":"l2",           
                "C": 1.0,               
                "solver":"lbfgs",    
-               "multi_class":"multinomial",
                "max_iter":1000},
-}
-
-# classifier_config = {
-#     # "type": "sklearnlogisticregression",
-#     "type": "sklearnrandomforestclassifier",
-#     "kwargs": {"n_jobs": -1, 
-#                "random_state": 0, 
-#                "n_estimators":300,
-#                "max_depth":20,
-#                "min_samples_leaf":5,
-#                "max_features":'sqrt'},
-# }
-
-min_leaf_size = 20
-depth = 3
+    }
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
 # trn_corpus = Preprocessor.load_data_from_file(train_filepath=training_file)
 
-htree = XMRPipeline.execute_pipeline(
+pipe = SkeletonBuilder(
+    vectorizer_config,
+    transformer_config, 
+    clustering_config, 
+    classifier_config, 
+    n_features, 
+    max_n_clusters, 
+    min_n_clusters, 
+    min_leaf_size, 
+    depth, 
+    dtype=np.float32
+    )
+
+htree = pipe.execute(
     X_train,
     Y_train,
-    label_enconder,
-    vectorizer_config,
-    transformer_config,
-    clustering_config,
-    classifier_config,
-    n_features=n_features,  # Number of Features
-    max_n_clusters=16,
-    min_n_clusters=6,
-    min_leaf_size=min_leaf_size,
-    depth=depth,
-    dtype=np.float32,
 )
 
 # Print the tree structure
