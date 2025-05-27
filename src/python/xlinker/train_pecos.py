@@ -181,7 +181,7 @@ onnx_directory = "test/test_data/processed/vectorizer/biobert_onnx_cpu.onnx"
 start = time.time()
 
 min_leaf_size = 20
-depth = 3
+depth = 2
 n_features = 2500
 max_n_clusters = 16
 min_n_clusters = 6
