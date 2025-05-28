@@ -86,11 +86,9 @@ print("Test instances loaded!")
 # ----------------------------------------------------------------------------
 """Change here"""
 
-onnx_directory = "test/test_data/processed/vectorizer/biobert_onnx_cpu.onnx"
-
 transformer_config = {
     "type": "biobert",
-    "kwargs": {"batch_size": 400, "onnx_directory": onnx_directory},
+    "kwargs": {"batch_size": 400},
 }
 
 x_linker_preds = Predict.inference(trained_xtree, test_input, transformer_config, k=args.top_k)

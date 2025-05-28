@@ -176,8 +176,6 @@ logging.info(
 # ------------------------------------------------------------
 logging.info("Training model")
 
-onnx_directory = "test/test_data/processed/vectorizer/biobert_onnx_cpu.onnx"
-
 start = time.time()
 
 min_leaf_size = 20
@@ -193,7 +191,7 @@ vectorizer_config = {
     
 transformer_config = {
     "type": "biobert",
-    "kwargs": {"batch_size": 400, "onnx_directory": onnx_directory},
+    "kwargs": {"batch_size": 400},
     }
 
 clustering_config = {
