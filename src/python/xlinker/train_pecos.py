@@ -190,8 +190,9 @@ vectorizer_config = {
     }
     
 transformer_config = {
-    "type": "biobert",
-    "kwargs": {"batch_size": 400},
+    # "type": "biobert",
+    "type": "sentencetbiobert",
+    "kwargs": {"batch_size": 400}
     }
 
 clustering_config = {
@@ -199,6 +200,7 @@ clustering_config = {
     "kwargs": {"random_state": 0, "max_iter": 300},
     }
 
+"""
 classifier_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {"n_jobs": -1, 
@@ -208,6 +210,20 @@ classifier_config = {
                "solver":"lbfgs",    
                "max_iter":1000},
     }
+"""
+
+classifier_config = {
+    "type": "sklearnsupportvectorclassification",
+    "kwargs": {
+        "kernel":"rbf",
+        "C": 1.0,
+        "gamma": "scale",
+        "class_weight": "balanced",
+        "probability": True
+    }
+}
+
+
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
