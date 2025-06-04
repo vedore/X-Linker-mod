@@ -200,6 +200,7 @@ clustering_config = {
     "kwargs": {"random_state": 0, "max_iter": 300},
     }
 
+"""
 classifier_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {"n_jobs": -1, 
@@ -209,6 +210,12 @@ classifier_config = {
                "solver":"lbfgs",    
                "max_iter":1000},
     }
+"""
+
+classifier_config = {
+    "type": "lightgbmclassifier",
+    "kwargs": {"random_state": 0}
+}
 
 """
 classifier_config = {
