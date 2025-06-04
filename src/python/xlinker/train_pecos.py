@@ -180,13 +180,14 @@ start = time.time()
 
 min_leaf_size = 20
 depth = 2
+n_features = 3000
 max_n_clusters = 16
 min_n_clusters = 6
 
 vectorizer_config = {
     "type": "tfidf", 
-    "kwargs": {}
-    }
+    "kwargs": {"max_features":n_features}
+}
     
 transformer_config = {
     # "type": "biobert",
@@ -232,6 +233,9 @@ classifier_config = {
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
 # trn_corpus = Preprocessor.load_data_from_file(train_filepath=training_file)
+
+
+n_features = 3000
 
 pipe = SkeletonBuilder(
     vectorizer_config,
