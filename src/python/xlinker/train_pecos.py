@@ -180,7 +180,7 @@ start = time.time()
 
 min_leaf_size = 20
 depth = 2
-n_features = 2500
+n_features = 768
 max_n_clusters = 16
 min_n_clusters = 6
 
