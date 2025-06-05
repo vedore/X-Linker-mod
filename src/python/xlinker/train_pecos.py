@@ -179,7 +179,7 @@ logging.info("Training model")
 start = time.time()
 
 min_leaf_size = 20
-depth = 10
+depth = 2
 n_features = 1024
 max_n_clusters = 16
 min_n_clusters = 6
