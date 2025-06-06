@@ -103,6 +103,7 @@ parsed_train_data = Preprocessor().load_data_labels_from_file(
 logging.info(f"Parse train file: {train_filepath}")
 
 Y_train = parsed_train_data["labels_matrix"]
+raw_labels = parsed_train_data["raw_labels"]
 X_train = parsed_train_data["corpus"]
 label_enconder = parsed_train_data["label_encoder"]
 
@@ -251,6 +252,7 @@ pipe = SkeletonBuilder(
     )
 
 htree = pipe.execute(
+    raw_labels,
     X_train,
     Y_train,
 )
