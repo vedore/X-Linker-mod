@@ -105,6 +105,7 @@ logging.info(f"Parse train file: {train_filepath}")
 Y_train = parsed_train_data["labels_matrix"]
 raw_labels = parsed_train_data["raw_labels"]
 X_train = parsed_train_data["corpus"]
+x_cross_train = parsed_train_data["cross_corpus"]
 label_enconder = parsed_train_data["label_encoder"]
 
 # Use training label frequency scores as costs -> build relevance matrix
@@ -253,6 +254,7 @@ pipe = SkeletonBuilder(
 
 htree = pipe.execute(
     raw_labels,
+    x_cross_train,
     X_train,
     Y_train,
 )
