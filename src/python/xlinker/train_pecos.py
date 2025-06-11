@@ -188,11 +188,10 @@ min_n_clusters = 6
 
 vectorizer_config = {
     "type": "tfidf", 
-    "kwargs": {}
+    "kwargs": {"max_features": 200000}
 }
     
 transformer_config = {
-    # "type": "biobert",
     "type": "sentencetbiobert",
     "kwargs": {"batch_size": 400}
     }
