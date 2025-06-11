@@ -235,9 +235,6 @@ classifier_config = {
 
 # trn_corpus = Preprocessor.load_data_from_file(train_filepath=training_file)
 
-
-n_features = 3000
-
 pipe = SkeletonBuilder(
     vectorizer_config,
     transformer_config, 
