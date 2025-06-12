@@ -183,7 +183,7 @@ start = time.time()
 min_leaf_size = 20
 depth = 10
 n_features = 768
-max_n_clusters = 16
+max_n_clusters = 20
 min_n_clusters = 6
 
 vectorizer_config = {
@@ -198,8 +198,21 @@ transformer_config = {
 
 clustering_config = {
     "type": "sklearnminibatchkmeans",
-    "kwargs": {"random_state": 0, "max_iter": 300},
+    "kwargs": {
+        "n_clusters": 8,  # This should be determined by your tuning process
+        "init": "k-means++",
+        "max_iter": 500,  # Increased from 300
+        "batch_size": 2048,  # Larger batch size for more stable updates
+        "verbose": 0,
+        "compute_labels": True,
+        "random_state": 42,  # Fixed for reproducibility
+        "tol": 1e-4,  # Added small tolerance for early stopping
+        "max_no_improvement": 20,  # More patience for improvement
+        "init_size": 24,  # 3 * n_clusters (3*8=24)
+        "n_init": 5,  # Run multiple initializations, pick best
+        "reassignment_ratio": 0.01,
     }
+}
 
 classifier_config = {
     "type": "sklearnlogisticregression",
