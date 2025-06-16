@@ -181,9 +181,9 @@ logging.info("Training model")
 start = time.time()
 
 min_leaf_size = 20
-depth = 16
+depth = 10
 n_features = 768
-max_n_clusters = 2
+max_n_clusters = 16
 min_n_clusters = 2
 
 vectorizer_config = {
