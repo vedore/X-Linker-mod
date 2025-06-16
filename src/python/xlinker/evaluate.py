@@ -159,6 +159,9 @@ if args.ppr:
 
     # Build the disambiguation graph, run PPR and process the results
     ppr.run(entity_type=args.ent_type, kb=args.kb, reel_dir=f"data/REEL/{run_name}")
+    
+    topk_accuracies = calculate_topk_accuracy(predictions_df, [1, 5, 10, 15, 20, 25])
+    print(f"Top-k accuracies: {topk_accuracies}")
 
 else:
     # Evaluate model performance
