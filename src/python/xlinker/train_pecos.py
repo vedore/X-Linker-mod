@@ -181,10 +181,10 @@ logging.info("Training model")
 start = time.time()
 
 min_leaf_size = 20
-depth = 3
+depth = 10
 n_features = 768
-max_n_clusters = 20
-min_n_clusters = 6
+max_n_clusters = 2
+min_n_clusters = 2
 
 vectorizer_config = {
     "type": "tfidf", 
@@ -223,26 +223,6 @@ classifier_config = {
                "solver":"lbfgs",    
                "max_iter":1000},
     }
-
-"""
-classifier_config = {
-    "type": "lightgbmclassifier",
-    "kwargs": {"random_state": 0}
-}
-"""
-
-"""
-classifier_config = {
-    "type": "sklearnsupportvectorclassification",
-    "kwargs": {
-        "kernel":"rbf",
-        "C": 1.0,
-        "gamma": "scale",
-        "class_weight": "balanced",
-        "probability": True
-    }
-}
-"""
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 

@@ -87,7 +87,6 @@ print("Test instances loaded!")
 """Change here"""
 
 transformer_config = {
-    # "type": "biobert",
     "type": "sentencetbiobert",
     "kwargs": {"batch_size": 400}
 }
