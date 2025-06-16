@@ -202,7 +202,7 @@ clustering_config = {
         "n_clusters": 8,  # This should be determined by your tuning process
         "init": "k-means++",
         "max_iter": 500,  # Increased from 300
-        "batch_size": 2048,  # Larger batch size for more stable updates
+        "batch_size": 0,  # Larger batch size for more stable updates
         "verbose": 0,
         "compute_labels": True,
         "random_state": 42,  # Fixed for reproducibility
