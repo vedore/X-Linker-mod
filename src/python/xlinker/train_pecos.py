@@ -196,6 +196,7 @@ transformer_config = {
     "kwargs": {"batch_size": 400}
     }
 
+"""
 clustering_config = {
     "type": "sklearnminibatchkmeans",
     "kwargs": {
@@ -211,6 +212,21 @@ clustering_config = {
         "init_size": 24,  # 3 * n_clusters (3*8=24)
         "n_init": 5,  # Run multiple initializations, pick best
         "reassignment_ratio": 0.01,
+    }
+}
+"""
+
+clustering_config = {
+    "type": "faisskmeans",  # Matches the registered name in your ClusterMeta system
+    "kwargs": {
+        "n_clusters": 8,           # Default cluster count (will be overridden by tuner)
+        "max_iter": 300,           # Max iterations per run
+        "nredo": 1,               # Number of initializations (FAISS calls this nredo)
+        "gpu": True,               # Enable GPU acceleration
+        "verbose": False,          # Disable progress prints
+        "spherical": False,        # Set True for cosine similarity (L2 normalizes first)
+        "seed": 42,                # Random seed (FAISS uses this for centroid init)
+        "tol": 1e-4,               # Early stopping tolerance
     }
 }
 
