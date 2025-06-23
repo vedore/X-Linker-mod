@@ -180,10 +180,10 @@ logging.info("Training model")
 
 start = time.time()
 
-min_leaf_size = 20
-depth = 3
+min_leaf_size = 30
+depth = 10
 n_features = 768
-max_n_clusters = 16
+max_n_clusters = 60
 min_n_clusters = 6
 
 vectorizer_config = {
@@ -231,15 +231,21 @@ clustering_config = {
 }
 
 classifier_config = {
-    "type": "sklearnlogisticregression",
-    "kwargs": {"n_jobs": -1, 
-               "random_state": 0,
-               "penalty":"l2",      
-               "class_weight": "balanced",  
-               "C": 1.0,               
-               "solver":"lbfgs",    
-               "max_iter":1000},
+    "type": "lightgbmclassifier",
+    "kwargs": {
+        "objective": "lambdarank",
+        "metric": "ndcg",
+        "boosting_type": "gbdt",
+        "num_leaves": 64,
+        "learning_rate": 0.05,
+        "n_estimators": 300,
+        "min_child_samples": 20,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "n_jobs": -1,
+        "random_state": 42
     }
+}
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
