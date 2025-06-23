@@ -231,19 +231,31 @@ clustering_config = {
 }
 
 classifier_config = {
-    "type": "lightgbmclassifier",
+    "type": "sklearnlogisticregression",
     "kwargs": {
-        "objective": "multiclass",
-        "boosting_type": "gbdt",
-        "learning_rate": 0.05,
-        "n_estimators": 300,
-        "num_leaves": 64,
-        "subsample": 0.8,
-        "colsample_bytree": 0.8,
-        "n_jobs": -1,
-        "random_state": 42
-    }
+        "n_jobs": -1, 
+        "random_state": 0,
+        "penalty":"l2",           
+        "C": 1.0,               
+        "solver":"lbfgs",    
+        "max_iter":1000
+        },
 }
+
+# classifier_config = {
+#     "type": "lightgbmclassifier",
+#     "kwargs": {
+#         "objective": "multiclass",
+#         "boosting_type": "gbdt",
+#         "learning_rate": 0.05,
+#         "n_estimators": 300,
+#         "num_leaves": 64,
+#         "subsample": 0.8,
+#         "colsample_bytree": 0.8,
+#         "n_jobs": -1,
+#         "random_state": 42
+#     }
+# }
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
