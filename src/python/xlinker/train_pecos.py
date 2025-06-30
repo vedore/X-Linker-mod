@@ -183,7 +183,7 @@ start = time.time()
 min_leaf_size = 30
 depth = 10
 n_features = 768
-max_n_clusters = 30
+max_n_clusters = 16
 min_n_clusters = 6
 
 vectorizer_config = {
