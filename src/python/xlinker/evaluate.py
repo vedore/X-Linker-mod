@@ -87,10 +87,9 @@ print("Test instances loaded!")
 """Change here"""
 
 transformer_config = {
-    # "type": "biobert",
-    "type": "sentencetsapbert",
+    "type": "sentencetbiobert",
     "kwargs": {"batch_size": 400}
-}
+    }
 
 x_linker_preds = Predict.inference(trained_xtree, test_input, transformer_config, k=args.top_k)
 
