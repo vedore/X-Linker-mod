@@ -184,7 +184,7 @@ min_leaf_size = 30
 depth = 10
 n_features = 2000
 max_n_clusters = 16
-min_n_clusters = 6
+min_n_clusters = 2
 
 vectorizer_config = {
     "type": "tfidf", 
