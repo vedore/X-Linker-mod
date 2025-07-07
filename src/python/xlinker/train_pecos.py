@@ -10,7 +10,7 @@ import torch
 from pecos.utils.featurization.text.preprocess import Preprocessor
 from pecos.xmc.xtransformer.model import XTransformer
 from pecos.xmc.xtransformer.module import MLProblemWithText
-from src.python.xtransformer.utils import get_cluster_chain
+from src.python.xlinker.utils import get_cluster_chain
 from logging.handlers import RotatingFileHandler
 
 # wandb.login()
