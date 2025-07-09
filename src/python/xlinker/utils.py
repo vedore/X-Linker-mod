@@ -262,7 +262,7 @@ def process_pecos_preds(
         pred_label = index_2_label[str(pred_index)]
         pred_labels.append(pred_label)
 
-    print(pred_labels, pred_scores)
+    print(annotation[4], pred_labels, pred_scores)
 
     if inference:
         output = []
