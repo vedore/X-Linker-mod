@@ -154,6 +154,7 @@ if args.ppr:
     os.makedirs(f"data/REEL/{run_name}", exist_ok=True)
     pred_path = f"data/REEL/{run_name}/xlinker_preds.tsv"
     predictions_df.to_csv(pred_path, sep="\t", index=False)
+    
     ppr.prepare_ppr_input(
         run_name,
         predictions_df,
