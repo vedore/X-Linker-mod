@@ -188,7 +188,7 @@ min_n_clusters = 2
 
 vectorizer_config = {
     "type": "tfidf", 
-    "kwargs": {"max_features": 20000}
+    "kwargs": {"max_features": 30000}
 }
     
 transformer_config = {

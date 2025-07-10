@@ -96,7 +96,12 @@ transformer_config = {
     "kwargs": {"batch_size": 400}
     }
 
-x_linker_preds = Predict.inference(trained_xtree, test_input, vectorizer_config, transformer_config, k=args.top_k)
+encoder_config = {
+    "type": "biolinkbert",
+    "kwargs": {}
+}
+
+x_linker_preds = Predict.inference(trained_xtree, test_input, vectorizer_config, transformer_config, encoder_config, k=args.top_k)
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
