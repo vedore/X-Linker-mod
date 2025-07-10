@@ -337,9 +337,6 @@ def apply_pipeline_to_mention(
         labels, and scores.
     """
 
-    output = []
-    annot_text = annotation[3]
-    true_label = annotation[4]
     # -----------------------------------------
     #   Get exact match from KB
     # -----------------------------------------
@@ -349,46 +346,30 @@ def apply_pipeline_to_mention(
 
     print(kb_matches)
 
-    exit()
-
     # -----------------------------------------------
     # Process X-Linker predictions
     # -----------------------------------------------
     pecos_output = process_pecos_preds(annotation, mention_preds, index_2_label, top_k)
     labels_to_add, scores_to_add = [], []
 
-    if kb_matches[0]["score"] == 1.0:
-        labels_to_add.append(kb_matches[0]["kb_id"])
-        scores_to_add.append(kb_matches[0]["score"])
+    # Step 1: Add ALL model predictions (regardless of KB matches)
+    for label, score in zip(pecos_output[5], pecos_output[6]):
+        if score >= threshold:  # Still respect confidence threshold
+            labels_to_add.append(label)
+            scores_to_add.append(score)
+    
+    # Step 2: Add KB matches (without 1.0 truncation logic)
+    for match in kb_matches:
+        if match["score"] >= threshold:  # Optional: apply threshold to KB matches too
+            labels_to_add.append(match["kb_id"])
+            scores_to_add.append(match["score"])
 
-        if pecos_output[6][0] == 1.0:
-            labels_to_add.append(pecos_output[5][0])
-            scores_to_add.append(pecos_output[6][0])
-
-    else:
-
-        if pecos_output[6][0] >= threshold:
-            labels_to_add.append(pecos_output[5][0])
-            scores_to_add.append(pecos_output[6][0])
-
-        else:
-
-            for i, label in enumerate(pecos_output[5]):
-                labels_to_add.append(label)
-                scores_to_add.append(pecos_output[6][i])
-
-            for i, match in enumerate(kb_matches):
-                labels_to_add.append(match["kb_id"])
-                scores_to_add.append(match["score"])
-
-    output = [
-        annotation[0],
-        annotation[1],
-        annotation[2],
-        annotation[3],
-        annotation[4],
-        labels_to_add,
-        scores_to_add,
+    return [
+        annotation[0],  # doc_id
+        annotation[1],  # start
+        annotation[2],  # end
+        annotation[3],  # text
+        annotation[4],  # true label
+        labels_to_add,  # all predictions
+        scores_to_add   # all scores
     ]
-
-    return output
