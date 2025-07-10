@@ -289,7 +289,7 @@ def process_pecos_preds(
 def apply_pipeline_to_mention(
     input_text,
     annotation,
-    mention_preds,  # CSR matrix with distance scores (lower=better)
+    mention_preds,      # CSR matrix with similarity scores (higher = better)
     kb_names,
     kb_synonyms,
     name_2_id,
@@ -297,20 +297,23 @@ def apply_pipeline_to_mention(
     index_2_label,
     top_k=5,
     fuzzy_top_k=1,
-    threshold=float('inf'),  # Now upper threshold for distances
+    threshold=0.0,      # Minimum relevance score
     always_include_model=True
 ):
     # Process model predictions
     pred_labels = []
     pred_scores = []
     
-    # Convert CSR matrix to dense format and get top-k LOWEST scores
+    # Convert CSR matrix to dense format and get top-k HIGHEST scores
     dense_scores = mention_preds.toarray().flatten()
-    top_k_indices = np.argpartition(dense_scores, top_k)[:top_k]
-    
+    if len(dense_scores) == 0:
+        top_k_indices = []
+    else:
+        top_k_indices = np.argpartition(-dense_scores, top_k)[:top_k]  # negate for descending
+
     for idx in top_k_indices:
         score = float(dense_scores[idx])
-        if score <= threshold:  # Now checking if score <= threshold (for distances)
+        if score >= 0.0:  # Threshold shoud be here, higher scores = more confident
             pred_labels.append(index_2_label[str(idx)])
             pred_scores.append(score)
     
@@ -325,7 +328,7 @@ def apply_pipeline_to_mention(
         # Add KB matches AFTER model predictions
         for match in kb_matches:
             output_labels.append(match["kb_id"])
-            output_scores.append(match["score"])  # Assuming KB scores are 0-1
+            output_scores.append(match["score"])  # Assuming KB scores are also 0–1
         
     return [
         annotation[0],  # doc_id

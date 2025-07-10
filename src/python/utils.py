@@ -1272,38 +1272,41 @@ def calculate_topk_accuracy(df, topk_values):
     Parameters
     ----------
     df : pandas.DataFrame
-        DataFrame containing the columns 'code' and 'codes'.
+        Must contain 'code' and 'codes' columns.
+        - 'code' is the true label
+        - 'codes' is a list or a stringified list of predicted codes
+
     topk_values : list of int
-        List of k values for which to calculate the Top-k accuracy.
+        Values of k to compute Top-k accuracy for.
 
     Returns
     -------
     dict
-        A dictionary with k values as keys and their corresponding 
-        accuracies as values.
+        {k: accuracy} for each k in topk_values.
     """
-    # Inicializar diccionario para almacenar los resultados
     topk_accuracies = {k: 0 for k in topk_values}
 
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         true_code = row["code"]
         predicted_codes = row["codes"]
 
-        if type(predicted_codes) == str:
-            to_add = predicted_codes.strip("[").strip("]").strip("'")
-            predicted_codes = [to_add]
+        # Handle stringified list
+        if isinstance(predicted_codes, str):
+            try:
+                predicted_codes = ast.literal_eval(predicted_codes)
+            except (ValueError, SyntaxError):
+                predicted_codes = [predicted_codes]
 
+        if not isinstance(predicted_codes, list):
+            predicted_codes = [predicted_codes]
+
+        # Remove duplicates while preserving order
         seen = set()
-        unique_candidates = [
-            x for x in predicted_codes if not (x in seen or seen.add(x))
-        ]
+        unique_candidates = [x for x in predicted_codes if not (x in seen or seen.add(x))]
 
         for k in topk_values:
             if true_code in unique_candidates[:k]:
                 topk_accuracies[k] += 1
 
-    total_rows = len(df)
-    for k in topk_values:
-        topk_accuracies[k] = topk_accuracies[k] / total_rows
-
-    return topk_accuracies
+    total = len(df)
+    return {k: correct / total for k, correct in topk_accuracies.items()}
