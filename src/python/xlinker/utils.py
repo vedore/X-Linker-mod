@@ -262,7 +262,7 @@ def process_pecos_preds(
         pred_label = index_2_label[str(pred_index)]
         pred_labels.append(pred_label)
 
-    print(annotation[4], pred_labels, pred_scores)
+    # print(annotation[4], pred_labels, pred_scores)
 
     if inference:
         output = []
@@ -346,6 +346,10 @@ def apply_pipeline_to_mention(
     kb_matches = map_to_kb(
         input_text, kb_names, kb_synonyms, name_2_id, synonym_2_id, top_k=fuzzy_top_k
     )
+
+    print(kb_matches)
+
+    exit()
 
     # -----------------------------------------------
     # Process X-Linker predictions
