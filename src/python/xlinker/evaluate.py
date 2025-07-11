@@ -84,24 +84,26 @@ print("Test instances loaded!")
 # ----------------------------------------------------------------------------
 # Apply model to test instances
 # ----------------------------------------------------------------------------
-"""Change here"""
-
-vectorizer_config = {
-    "type": "tfidf", 
-    "kwargs": {}
-    }
 
 transformer_config = {
     "type": "sentencetbiobert",
     "kwargs": {"batch_size": 400}
     }
 
+"""
 encoder_config = {
     "type": "minilm_l6_v2",
     "kwargs": {}
 }
+"""
 
-x_linker_preds = Predict.inference(trained_xtree, test_input, vectorizer_config, transformer_config, encoder_config, k=args.top_k)
+encoder_config = {
+    "type": "biolinkbert",
+    "kwargs": {}
+}
+
+
+x_linker_preds = Predict.inference(trained_xtree, test_input, transformer_config, encoder_config, k=args.top_k)
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
