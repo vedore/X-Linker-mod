@@ -277,8 +277,7 @@ pipe = SkeletonBuilder(
 htree = pipe.execute(
     raw_labels,
     x_cross_train,
-    X_train,
-    Y_train,
+    X_train
 )
 
 # Print the tree structure
