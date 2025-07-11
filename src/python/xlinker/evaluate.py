@@ -97,7 +97,7 @@ transformer_config = {
     }
 
 encoder_config = {
-    "type": "biolinkbert",
+    "type": "minilm_l6_v2",
     "kwargs": {}
 }
 
