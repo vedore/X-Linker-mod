@@ -1,5 +1,5 @@
 """Script to evaluate PECOS-EL and X-Linker in datasets"""
-
+import time
 import os
 import pandas as pd
 import src.python.xlinker.ppr as ppr
@@ -22,6 +22,8 @@ from tqdm import tqdm
 
 from xmr4el.xmr.skeleton import Skeleton
 from xmr4el.predict.predict import Predict
+
+start = time.time()
 
 # Parse arguments
 parser = ArgumentParser()
@@ -185,3 +187,6 @@ else:
     topK_list = [list(topk_accuracies.values())]
     df = pd.DataFrame(topK_list)
     df.to_csv("data.tsv", sep="\t", index=False)
+
+end = time.time()
+print(f"{end - start} secs of running")
