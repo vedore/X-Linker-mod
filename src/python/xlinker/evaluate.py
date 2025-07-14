@@ -90,17 +90,17 @@ transformer_config = {
     "kwargs": {"batch_size": 400}
     }
 
-"""
 encoder_config = {
     "type": "minilm_l6_v2",
     "kwargs": {}
 }
-"""
 
+"""
 encoder_config = {
     "type": "biolinkbert",
     "kwargs": {}
 }
+"""
 
 
 x_linker_preds = Predict.inference(trained_xtree, test_input, transformer_config, encoder_config, k=args.top_k)
