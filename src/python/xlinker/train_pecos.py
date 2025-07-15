@@ -102,18 +102,10 @@ parsed_train_data = Preprocessor().load_data_labels_from_file(
 
 logging.info(f"Parse train file: {train_filepath}")
 
-Y_train = parsed_train_data["labels_matrix"]
 raw_labels = parsed_train_data["raw_labels"]
-X_train = parsed_train_data["corpus"]
 x_cross_train = parsed_train_data["cross_corpus"]
-label_enconder = parsed_train_data["label_encoder"]
 
 # Use training label frequency scores as costs -> build relevance matrix
-R_train = copy.deepcopy(Y_train)
-
-logging.info(
-    f"Constructed training corpus len={len(X_train)}, training label matrix with shape={Y_train.shape} and nnz={Y_train.nnz}"
-)
 
 # ------------------------------------------------------------
 # Feature extraction: build TF-IDF model with training corpus
@@ -183,8 +175,6 @@ start = time.time()
 min_leaf_size = 30
 depth = 10
 n_features = 768
-max_n_clusters = 16
-min_n_clusters = 2
 
 vectorizer_config = {
     "type": "tfidf", 
@@ -265,8 +255,6 @@ pipe = SkeletonBuilder(
     clustering_config, 
     classifier_config, 
     n_features, 
-    max_n_clusters, 
-    min_n_clusters, 
     min_leaf_size, 
     depth, 
     dtype=np.float32
@@ -274,8 +262,7 @@ pipe = SkeletonBuilder(
 
 htree = pipe.execute(
     raw_labels,
-    x_cross_train,
-    X_train
+    x_cross_train
 )
 
 # Print the tree structure
