@@ -224,7 +224,6 @@ clustering_config = {
     }
 }
 
-"""
 classifier_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
@@ -236,9 +235,10 @@ classifier_config = {
         "max_iter":1000
         },
 }
-"""
 
-# Bugged adding for commit 
+
+# Bugged adding for commit
+"""
 classifier_config = {
     "type": "lightgbmclassifier",
     "kwargs": {
@@ -253,6 +253,7 @@ classifier_config = {
         "random_state": 42
     }
 }
+"""
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
