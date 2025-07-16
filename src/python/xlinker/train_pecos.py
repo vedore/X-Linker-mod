@@ -186,11 +186,11 @@ transformer_config = {
     "kwargs": {"batch_size": 400}
     }
 
-"""
+
 clustering_config = {
     "type": "sklearnminibatchkmeans",
     "kwargs": {
-        "n_clusters": 8,  # This should be determined by your tuning process
+        "n_clusters": 16,  # This should be determined by your tuning process
         "init": "k-means++",
         "max_iter": 500,  # Increased from 300
         "batch_size": 0,  # Larger batch size for more stable updates
@@ -199,13 +199,13 @@ clustering_config = {
         "random_state": 42,  # Fixed for reproducibility
         "tol": 1e-4,  # Added small tolerance for early stopping
         "max_no_improvement": 20,  # More patience for improvement
-        "init_size": 24,  # 3 * n_clusters (3*8=24)
+        "init_size": 8*3,  # 3 * n_clusters (3*8=24)
         "n_init": 5,  # Run multiple initializations, pick best
         "reassignment_ratio": 0.01,
     }
 }
-"""
 
+"""
 clustering_config = {
     "type": "faisskmeans",  # Matches the registered name in your ClusterMeta system
     "kwargs": {
@@ -213,6 +213,7 @@ clustering_config = {
         "max_iter": 300,           # Max iterations per run
     }
 }
+"""
 
 classifier_config = {
     "type": "sklearnlogisticregression",
