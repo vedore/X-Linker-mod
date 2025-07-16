@@ -186,7 +186,7 @@ transformer_config = {
     "kwargs": {"batch_size": 4000}
     }
 
-
+"""
 clustering_config = {
     "type": "sklearnminibatchkmeans",
     "kwargs": {
@@ -204,8 +204,8 @@ clustering_config = {
         "reassignment_ratio": 0.01,
     }
 }
-
 """
+
 clustering_config = {
     "type": "faisskmeans",  # Matches the registered name in your ClusterMeta system
     "kwargs": {
@@ -213,7 +213,6 @@ clustering_config = {
         "max_iter": 300,           # Max iterations per run
     }
 }
-"""
 
 classifier_config = {
     "type": "sklearnlogisticregression",
