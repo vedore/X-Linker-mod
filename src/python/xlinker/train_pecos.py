@@ -183,7 +183,7 @@ vectorizer_config = {
     
 transformer_config = {
     "type": "sentencetbiobert",
-    "kwargs": {"batch_size": 16000}
+    "kwargs": {"batch_size": 4000}
     }
 
 
