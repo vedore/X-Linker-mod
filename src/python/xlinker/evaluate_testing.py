@@ -1,6 +1,7 @@
 """Script to evaluate PECOS-EL and X-Linker in datasets"""
 import time
 import os
+from typing import Counter
 import pandas as pd
 import src.python.xlinker.ppr as ppr
 
@@ -112,7 +113,7 @@ input_embs = si.transform_input_text(test_input)
 
 x_linker_preds, hits = si.batch_inference(input_embs, code_lists)
 
-print(hits)
+print(Counter(hits))
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
