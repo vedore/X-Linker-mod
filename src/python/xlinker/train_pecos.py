@@ -183,7 +183,7 @@ vectorizer_config = {
     
 transformer_config = {
     "type": "sentencetbiobert",
-    "kwargs": {"batch_size": 4000,
+    "kwargs": {"batch_size": 3500,
                "device": "gpu"}
     }
 
@@ -255,6 +255,7 @@ pipe = SkeletonBuilder(
     transformer_config, 
     clustering_config, 
     classifier_config, 
+    classifier_config, # Reranker
     n_features, 
     min_leaf_size, 
     depth, 
