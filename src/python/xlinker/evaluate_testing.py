@@ -21,7 +21,7 @@ from src.python.utils import (
 from tqdm import tqdm
 
 from xmr4el.xmr.skeleton import Skeleton
-from xmr4el.predict.predict import Predict
+from xmr4el.predict.skeleton_inference import SkeletonInference
 
 start = time.time()
 
@@ -101,7 +101,16 @@ print("Test instances loaded!")
 
 code_lists = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt")
 
-x_linker_preds = Predict.inference(trained_xtree, code_lists, test_input, k=args.top_k)
+# x_linker_preds = Predict.inference(trained_xtree, code_lists, test_input, k=args.top_k)
+
+si = SkeletonInference(
+    trained_xtree,
+    trained_xtree.labels
+)
+
+input_embs = si.transform_input_text(test_input)
+
+x_linker_preds = si.batch_inference(input_embs, code_lists)
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
