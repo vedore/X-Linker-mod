@@ -109,9 +109,9 @@ si = SkeletonInference(
     trained_xtree.labels
 )
 
-input_embs = si.transform_input_text(test_input)
+input_embs = si.generate_input_embeddigns(test_input)
 
-x_linker_preds, hits = si.batch_inference(input_embs, code_lists)
+x_linker_preds, hits = si.batch_inference(input_embs, code_lists, k=10)
 
 print(Counter(hits))
 
