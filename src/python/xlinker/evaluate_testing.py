@@ -104,12 +104,16 @@ code_lists = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt")
 
 # x_linker_preds = Predict.inference(trained_xtree, code_lists, test_input, k=args.top_k)
 
+print(trained_xtree)
+
 si = SkeletonInference(
     trained_xtree,
     trained_xtree.labels
 )
 
 input_embs = si.generate_input_embeddigns(test_input)
+
+print(input_embs, input_embs.shape)
 
 x_linker_preds, hits = si.batch_inference(input_embs, code_lists, k=10)
 
