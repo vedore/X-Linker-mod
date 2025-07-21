@@ -23,6 +23,7 @@ from tqdm import tqdm
 
 from xmr4el.xmr.skeleton import Skeleton
 from xmr4el.predict.skeleton_inference import SkeletonInference
+from xmr4el.predict.skeleton_predict import SkeletonPredict
 
 start = time.time()
 
@@ -106,16 +107,16 @@ code_lists = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt")
 
 print(trained_xtree)
 
-si = SkeletonInference(
+sp = SkeletonPredict(
     trained_xtree,
     trained_xtree.labels
 )
 
-input_embs = si.generate_input_embeddigns(test_input)
+input_embs = sp.generate_input_embeddigns(test_input)
 
-print(input_embs, input_embs.shape)
+# print(input_embs, input_embs.shape)
 
-x_linker_preds, hits = si.batch_inference(input_embs, code_lists, k=10)
+x_linker_preds, hits = sp.batch_predict(input_embs, code_lists, k=10)
 
 print(Counter(hits))
 
