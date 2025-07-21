@@ -107,7 +107,7 @@ code_lists = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt")
 
 print(trained_xtree)
 
-sp = SkeletonPredict(
+sp = SkeletonInference(
     trained_xtree,
     trained_xtree.labels
 )
@@ -116,7 +116,7 @@ input_embs = sp.generate_input_embeddigns(test_input)
 
 # print(input_embs, input_embs.shape)
 
-x_linker_preds, hits = sp.batch_predict(input_embs, code_lists, k=10)
+x_linker_preds, hits = sp.batch_inference(input_embs, code_lists, k=10)
 
 print(Counter(hits))
 
