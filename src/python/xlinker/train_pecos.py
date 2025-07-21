@@ -218,13 +218,32 @@ clustering_config = {
 classifier_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
-        "n_jobs": -1, 
-        "random_state": 0,
-        "penalty":"l2",           
-        "C": 1.0,               
-        "solver":"lbfgs",    
-        "max_iter":1000
-        },
+        # solve the multi‑class routing problem directly
+        "multi_class": "multinomial",  
+        "solver": "lbfgs",              # robust and fast for multinomial
+        "penalty": "l2",                # standard regularization
+        "C": 1.0,                       # 1.0 is a good default; you can grid‑search .1 → 10
+        "class_weight": None,           # assume roughly balanced classes at each node
+        "max_iter": 1000,               # ensure convergence
+        "n_jobs": -1,                   # parallelize across CPUs
+        "random_state": 0,              # reproducibility
+        "verbose": 0,                   
+    }
+}
+
+reranker_config = {
+    "type": "sklearnlogisticregression",
+    "kwargs": {
+        # binary classification: “is this entity a match?”
+        "solver": "saga",               # handles large, sparse data well
+        "penalty": "l2",                # standard regularization
+        "C": 0.5,                       # a bit stronger regularization helps generalize
+        "class_weight": "balanced",     # counteracts few-positives many-negatives
+        "max_iter": 1000,               # ensure convergence
+        "n_jobs": -1,                   # parallelize across CPUs
+        "random_state": 0,              # reproducibility
+        "verbose": 0,
+    }
 }
 
 
@@ -255,7 +274,7 @@ pipe = SkeletonBuilder(
     transformer_config, 
     clustering_config, 
     classifier_config, 
-    classifier_config, # Reranker
+    reranker_config, # Reranker
     n_features, 
     min_leaf_size, 
     depth, 
