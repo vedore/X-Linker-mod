@@ -219,8 +219,7 @@ classifier_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
         # solve the multi‑class routing problem directly
-        "multi_class": "multinomial",  
-        "solver": "lbfgs",              # robust and fast for multinomial
+        "solver": "saga",              # robust and fast for multinomial
         "penalty": "l2",                # standard regularization
         "C": 1.0,                       # 1.0 is a good default; you can grid‑search .1 → 10
         "class_weight": None,           # assume roughly balanced classes at each node
