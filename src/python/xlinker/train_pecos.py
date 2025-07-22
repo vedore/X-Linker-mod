@@ -172,9 +172,9 @@ logging.info("Training model")
 
 start = time.time()
 
-min_leaf_size = 20
+min_leaf_size = 30
 depth = 1
-n_features = 768
+n_features = 1000
 
 vectorizer_config = {
     "type": "tfidf", 
@@ -190,7 +190,7 @@ transformer_config = {
 clustering_config = {
     "type": "sklearnminibatchkmeans",
     "kwargs": {
-        "n_clusters": 6,  # This should be determined by your tuning process
+        "n_clusters": 16,  # This should be determined by your tuning process
         "init": "k-means++",
         "max_iter": 500,  # Increased from 300
         "batch_size": 0,  # Larger batch size for more stable updates

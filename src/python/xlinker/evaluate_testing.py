@@ -109,7 +109,6 @@ print(trained_xtree)
 
 sp = SkeletonInference(
     trained_xtree,
-    trained_xtree.labels
 )
 
 input_embs = sp.generate_input_embeddigns(test_input)
@@ -118,15 +117,24 @@ input_embs = sp.generate_input_embeddigns(test_input)
 
 x_linker_preds, hits = sp.batch_inference(input_embs, code_lists, k=10)
 
-print(Counter(hits))
+print(x_linker_preds, x_linker_preds.shape)
+    
+print(hits)
+    
+found_ratio = []
+for found, _, _ in hits:
+    if found == 1:
+        found_ratio.append(1)
+    else:
+        found_ratio.append(0)
+            
+print(Counter(found_ratio))
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
 # )
 
 # [[1, 2, 3, 4, 5]]
-
-print(x_linker_preds, x_linker_preds.shape)
 
 print("Linking test instances...")
 
