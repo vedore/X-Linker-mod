@@ -22,8 +22,7 @@ from src.python.utils import (
 from tqdm import tqdm
 
 from xmr4el.xmr.skeleton import Skeleton
-from xmr4el.predict.skeleton_inference import SkeletonInference
-from xmr4el.predict.skeleton_predict import SkeletonPredict
+from xmr4el.predict.inference import SkeletonInference
 
 start = time.time()
 

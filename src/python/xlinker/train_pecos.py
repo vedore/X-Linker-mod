@@ -12,7 +12,7 @@ import numpy as np
 from logging.handlers import RotatingFileHandler
 
 from xmr4el.featurization.preprocessor import Preprocessor
-from xmr4el.xmr.skeleton_builder import SkeletonBuilder
+from xmr4el.xmr.builder import SkeletonBuilder
 
 # wandb.login()
 
