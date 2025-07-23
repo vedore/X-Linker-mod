@@ -238,7 +238,7 @@ reranker_config = {
         # binary classification: “is this entity a match?”
         "solver": "saga",               # handles large, sparse data well
         "penalty": "l2",                # standard regularization
-        "C": 0.5,                       # a bit stronger regularization helps generalize
+        "C": 0.9,                       # a bit stronger regularization helps generalize was 0.5 wanst converging
         "class_weight": "balanced",     # counteracts few-positives many-negatives
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
