@@ -226,7 +226,7 @@ classifier_config = {
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
         "random_state": 0,              # reproducibility
-        "verbose": 0,                   
+        "verbose": 1,                   
     }
 }
 
@@ -241,7 +241,7 @@ reranker_config = {
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
         "random_state": 0,              # reproducibility
-        "verbose": 0,
+        "verbose": 1,
     }
 }
 
