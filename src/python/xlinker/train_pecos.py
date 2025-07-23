@@ -8,6 +8,8 @@ import torch
 import time
 import numpy as np
 
+from tqdm import tqdm
+
 # import wandb
 from logging.handlers import RotatingFileHandler
 
@@ -226,7 +228,7 @@ classifier_config = {
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
         "random_state": 0,              # reproducibility
-        "verbose": 1,                   
+        "verbose": 0,                   
     }
 }
 
@@ -241,7 +243,7 @@ reranker_config = {
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
         "random_state": 0,              # reproducibility
-        "verbose": 1,
+        "verbose": 0,
     }
 }
 
