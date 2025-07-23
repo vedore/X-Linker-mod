@@ -190,7 +190,7 @@ transformer_config = {
 clustering_config = {
     "type": "sklearnminibatchkmeans",
     "kwargs": {
-        "n_clusters": 16,  # This should be determined by your tuning process
+        "n_clusters": 12,  # This should be determined by your tuning process
         "init": "k-means++",
         "max_iter": 500,  # Increased from 300
         "batch_size": 0,  # Larger batch size for more stable updates
