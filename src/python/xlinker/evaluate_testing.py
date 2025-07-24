@@ -114,7 +114,7 @@ input_embs = sp.generate_input_embeddigns(test_input)
 
 # print(input_embs, input_embs.shape)
 
-x_linker_preds, hits = sp.batch_inference(input_embs, code_lists, k=10)
+x_linker_preds, hits = sp.batch_inference(input_embs, code_lists, topk=10)
 
 print(x_linker_preds, x_linker_preds.shape)
     
