@@ -220,8 +220,8 @@ clustering_config = {
 classifier_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
-        "solver": "saga",              # robust and fast for multinomial
-        "penalty": "l2",                # standard regularization
+        "solver": "liblinear",              # robust and fast for multinomial
+        "penalty": "l1",                # standard regularization
         "C": 1.0,                       # 1.0 is a good default; you can grid‑search .1 → 10
         "class_weight": None,           # assume roughly balanced classes at each node
         "max_iter": 1000,               # ensure convergence
@@ -234,9 +234,9 @@ classifier_config = {
 reranker_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
-        "solver": "saga",               # handles large, sparse data well
-        "penalty": "l2",                # standard regularization
-        "C": 0.9,                       # a bit stronger regularization helps generalize was 0.5 wanst converging
+        "solver": "liblinear",               # handles large, sparse data well
+        "penalty": "l1",                # standard regularization
+        "C": 1.0,                       # a bit stronger regularization helps generalize was 0.5 wanst converging
         "class_weight": "balanced",     # counteracts few-positives many-negatives
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
