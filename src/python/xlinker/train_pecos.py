@@ -220,7 +220,6 @@ clustering_config = {
 classifier_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
-        # solve the multi‑class routing problem directly
         "solver": "saga",              # robust and fast for multinomial
         "penalty": "l2",                # standard regularization
         "C": 1.0,                       # 1.0 is a good default; you can grid‑search .1 → 10
@@ -228,14 +227,13 @@ classifier_config = {
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
         "random_state": 0,              # reproducibility
-        "verbose": 0,                   
+        "verbose": 1,                   
     }
 }
 
 reranker_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
-        # binary classification: “is this entity a match?”
         "solver": "saga",               # handles large, sparse data well
         "penalty": "l2",                # standard regularization
         "C": 0.9,                       # a bit stronger regularization helps generalize was 0.5 wanst converging
@@ -243,7 +241,7 @@ reranker_config = {
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
         "random_state": 0,              # reproducibility
-        "verbose": 0,
+        "verbose": 1,
     }
 }
 
