@@ -38,6 +38,31 @@ def read_codes_file(filepath):
 
     return code_lists
 
+def filter_labels_and_inputs(gold_labels, input_texts, allowed_labels):
+    """
+    Filters out gold_labels (list of lists) and corresponding input_texts
+    where the first label in each gold label list is not in allowed_labels.
+
+    Args:
+        gold_labels (List[List[str]]): Nested list of gold labels.
+        input_texts (List[str]): Raw input texts, aligned with gold_labels.
+        allowed_labels (Iterable[str]): Set or list of valid labels.
+
+    Returns:
+        Tuple[List[List[str]], List[str]]: Filtered gold_labels and input_texts.
+    """
+    allowed_set = set(allowed_labels)
+
+    filtered_labels = []
+    filtered_texts = []
+
+    for label_list, text in zip(gold_labels, input_texts):
+        if label_list and label_list[0] in allowed_set:
+            filtered_labels.append(label_list)
+            filtered_texts.append(text)
+
+    return filtered_labels, filtered_texts
+
 # Parse arguments
 parser = ArgumentParser()
 parser.add_argument("-dataset", type=str, required=True)
@@ -110,7 +135,11 @@ sp = SkeletonInference(
     trained_xtree,
 )
 
-input_embs = sp.generate_input_embeddigns(test_input)
+gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") # Need to filter out the ones that werent used.
+    
+filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.labels)
+
+input_embs = sp.generate_input_embeddigns(filtered_texts)
 
 # print(input_embs, input_embs.shape)
 
