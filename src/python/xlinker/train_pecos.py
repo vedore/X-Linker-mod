@@ -216,7 +216,7 @@ clustering_config = {
     }
 }
 """
-
+"""
 classifier_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
@@ -231,6 +231,7 @@ classifier_config = {
     }
 }
 
+
 reranker_config = {
     "type": "sklearnlogisticregression",
     "kwargs": {
@@ -242,6 +243,43 @@ reranker_config = {
         "n_jobs": -1,                   # parallelize across CPUs
         "random_state": 0,              # reproducibility
         "verbose": 1,
+    }
+}
+"""
+
+classifier_config = {
+    "type": "sklearnsgdclassifier",
+    "kwargs": {
+        "loss": "log_loss",            # Equivalent to LogisticRegression (probabilistic)
+        "penalty": "l2",               # Default for SGDClassifier; use 'l1' for sparsity
+        "alpha": 0.0001,               # Inverse of regularization strength (C=1/alpha)
+        "max_iter": 1000,              # Ensure convergence
+        "tol": 1e-4,                   # Early stopping tolerance
+        "class_weight": None,          # Balanced classes assumed
+        "n_jobs": -1,                  # Parallelize OvR (if multi-class)
+        "random_state": 0,             # Reproducibility
+        "verbose": 1,
+        "early_stopping": True,        # Stop if validation score plateaus
+        "learning_rate": "optimal",    # Auto-adjusts step size
+        "eta0": 0.0,                   # Initial learning rate (ignored if 'optimal')
+    }
+}
+
+reranker_config = {
+    "type": "sklearnsgdclassifier",
+    "kwargs": {
+        "loss": "hinge",               # Margin loss (like SVM; no probabilities)
+        "penalty": "l2",               # Standard for ranking (use 'l1' for sparsity)
+        "alpha": 0.0001,               # Stronger regularization (C=1/alpha)
+        "max_iter": 1000,              # Ensure convergence
+        "tol": 1e-4,
+        "class_weight": "balanced",    # Critical for imbalanced ranking data
+        "n_jobs": -1,                  # Parallelize OvR if multi-label
+        "random_state": 0,
+        "verbose": 1,
+        "early_stopping": True,
+        "learning_rate": "adaptive",   # Handles noisy gradients better
+        "eta0": 0.01,                  # Higher initial learning rate for ranking
     }
 }
 
