@@ -209,15 +209,19 @@ clustering_config = {
 }
 """
 
-
 clustering_config = {
-    "type": "faisskmeans",  # Matches the registered name in your ClusterMeta system
+    "type": "faisskmeans",
     "kwargs": {
-        "n_clusters": 4,           # Default cluster count (will be overridden by tuner)
-        "max_iter": 300,           # Max iterations per run
+        "n_clusters": 8,           # Slightly more clusters to capture finer structure
+        "max_iter": 500,           # More iterations for stable convergence
+        "nredo": 3,                # More restarts to avoid local minima
+        "gpu": False,              # Keep false unless GPU available
+        "verbose": False,
+        "spherical": True,         # Keep cosine similarity for semantic data
+        "seed": 42,
+        "tol": 1e-5,               # Tighter tolerance for early stop
     }
 }
-
 
 """
 classifier_config = {
@@ -253,36 +257,36 @@ reranker_config = {
 classifier_config = {
     "type": "sklearnsgdclassifier",
     "kwargs": {
-        "loss": "log_loss",            # Equivalent to LogisticRegression (probabilistic)
-        "penalty": "l2",               # Default for SGDClassifier; use 'l1' for sparsity
-        "alpha": 0.0001,               # Inverse of regularization strength (C=1/alpha)
-        "max_iter": 1000,              # Ensure convergence
-        "tol": 1e-4,                   # Early stopping tolerance
-        "class_weight": None,          # Balanced classes assumed
-        "n_jobs": -1,                  # Parallelize OvR (if multi-class)
-        "random_state": 0,             # Reproducibility
+        "loss": "log_loss",            # Logistic regression for routing probabilistic outputs
+        "penalty": "l2",
+        "alpha": 5e-5,                 # Slightly weaker regularization to allow more fitting
+        "max_iter": 1500,              # More iterations for difficult nodes
+        "tol": 1e-5,                   # Tighter tolerance for convergence
+        "class_weight": "balanced",    # Handle imbalanced classes better
+        "n_jobs": -1,
+        "random_state": 0,
         "verbose": 0,
-        "early_stopping": True,        # Stop if validation score plateaus
-        "learning_rate": "optimal",    # Auto-adjusts step size
-        "eta0": 0.0,                   # Initial learning rate (ignored if 'optimal')
+        "early_stopping": True,
+        "learning_rate": "optimal",
+        "eta0": 0.0,
     }
 }
 
 reranker_config = {
     "type": "sklearnsgdclassifier",
     "kwargs": {
-        "loss": "hinge",               # Margin loss (like SVM; no probabilities)
-        "penalty": "l2",               # Standard for ranking (use 'l1' for sparsity)
-        "alpha": 0.0001,               # Stronger regularization (C=1/alpha)
-        "max_iter": 1000,              # Ensure convergence
-        "tol": 1e-4,
-        "class_weight": "balanced",    # Critical for imbalanced ranking data
-        "n_jobs": -1,                  # Parallelize OvR if multi-label
+        "loss": "hinge",
+        "penalty": "l2",
+        "alpha": 1e-4,                # Maintain strong regularization to avoid overfitting
+        "max_iter": 2000,             # Extra iterations for ranking stability
+        "tol": 1e-5,
+        "class_weight": "balanced",   # Essential for skewed reranker data
+        "n_jobs": -1,
         "random_state": 0,
         "verbose": 0,
         "early_stopping": True,
-        "learning_rate": "adaptive",   # Handles noisy gradients better
-        "eta0": 0.01,                  # Higher initial learning rate for ranking
+        "learning_rate": "adaptive",  # Adaptive for noisy gradients
+        "eta0": 0.005,                # Moderate initial learning rate
     }
 }
 
