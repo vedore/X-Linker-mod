@@ -189,6 +189,7 @@ transformer_config = {
                "device": "gpu"}
     }
 
+"""
 clustering_config = {
     "type": "sklearnminibatchkmeans",
     "kwargs": {
@@ -206,16 +207,18 @@ clustering_config = {
         "reassignment_ratio": 0.01,
     }
 }
-
 """
+
+
 clustering_config = {
     "type": "faisskmeans",  # Matches the registered name in your ClusterMeta system
     "kwargs": {
-        "n_clusters": 8,           # Default cluster count (will be overridden by tuner)
+        "n_clusters": 4,           # Default cluster count (will be overridden by tuner)
         "max_iter": 300,           # Max iterations per run
     }
 }
-"""
+
+
 """
 classifier_config = {
     "type": "sklearnlogisticregression",
@@ -258,7 +261,7 @@ classifier_config = {
         "class_weight": None,          # Balanced classes assumed
         "n_jobs": -1,                  # Parallelize OvR (if multi-class)
         "random_state": 0,             # Reproducibility
-        "verbose": 1,
+        "verbose": 0,
         "early_stopping": True,        # Stop if validation score plateaus
         "learning_rate": "optimal",    # Auto-adjusts step size
         "eta0": 0.0,                   # Initial learning rate (ignored if 'optimal')
@@ -276,7 +279,7 @@ reranker_config = {
         "class_weight": "balanced",    # Critical for imbalanced ranking data
         "n_jobs": -1,                  # Parallelize OvR if multi-label
         "random_state": 0,
-        "verbose": 1,
+        "verbose": 0,
         "early_stopping": True,
         "learning_rate": "adaptive",   # Handles noisy gradients better
         "eta0": 0.01,                  # Higher initial learning rate for ranking
