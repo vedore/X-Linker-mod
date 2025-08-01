@@ -308,6 +308,7 @@ classifier_config = {
 """
 
 min_leaf_size = 30
+max_leaf_size = 200
 depth = 3
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
@@ -320,6 +321,8 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 clustering_config=clustering_config,
                 matcher_config=matcher_config,
                 reranker_config=reranker_config,
+                min_leaf_size=min_leaf_size,
+                max_leaf_size=max_leaf_size,
                 n_workers=6,
                 depth=depth,
                 emb_flag=1
