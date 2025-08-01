@@ -21,9 +21,6 @@ from src.python.utils import (
 
 from tqdm import tqdm
 
-from xmr4el.xmr.skeleton import Skeleton
-from xmr4el.predict.inference import SkeletonInference
-
 start = time.time()
 
 def read_codes_file(filepath):
@@ -130,10 +127,6 @@ code_lists = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt")
 # x_linker_preds = Predict.inference(trained_xtree, code_lists, test_input, k=args.top_k)
 
 print(trained_xtree)
-
-sp = SkeletonInference(
-    trained_xtree,
-)
 
 gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") # Need to filter out the ones that werent used.
     
