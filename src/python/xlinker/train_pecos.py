@@ -320,6 +320,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 clustering_config=clustering_config,
                 matcher_config=matcher_config,
                 reranker_config=reranker_config,
+                n_workers=10,
                 depth=depth,
                 emb_flag=1
                 )
