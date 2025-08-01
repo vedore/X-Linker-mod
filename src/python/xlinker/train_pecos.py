@@ -210,7 +210,7 @@ clustering_config = {
 clustering_config = {
     "type": "faisskmeans",
     "kwargs": {
-        "n_clusters": 6,           # Slightly more clusters to capture finer structure
+        "n_clusters": 8,           # Slightly more clusters to capture finer structure
         "max_iter": 500,           # More iterations for stable convergence
         "nredo": 3,                # More restarts to avoid local minima
         "gpu": False,              # Keep false unless GPU available
