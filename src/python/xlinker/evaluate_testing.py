@@ -139,13 +139,9 @@ gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") 
     
 filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.labels)
 
-input_embs = sp.generate_input_embeddigns(filtered_texts)
+predicted_labels, hits = trained_xtree.predict(filtered_texts, filtered_labels, topk=10)
 
-# print(input_embs, input_embs.shape)
-
-x_linker_preds, hits = sp.batch_inference(input_embs, code_lists, topk=10)
-
-print(x_linker_preds, x_linker_preds.shape)
+print(predicted_labels, predicted_labels.shape)
     
 print(hits)
     
@@ -157,6 +153,9 @@ for found, _, _ in hits:
         found_ratio.append(0)
             
 print(Counter(found_ratio))
+
+end = time.time()
+print(f"{end - start} secs of running")
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
@@ -170,7 +169,7 @@ output = []
 pbar = tqdm(total=len(test_annots))
 
 for i, annotation in enumerate(test_annots):
-    mention_preds = x_linker_preds[i, :]
+    mention_preds = predicted_labels[i, :]
 
     if args.pipeline:
         # Apply pipeline to every mention in test set

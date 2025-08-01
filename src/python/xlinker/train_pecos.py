@@ -14,7 +14,7 @@ from tqdm import tqdm
 from logging.handlers import RotatingFileHandler
 
 from xmr4el.featurization.preprocessor import Preprocessor
-from xmr4el.xmr.builder import SkeletonBuilder
+from xmr4el.xmr.model import XModel
 
 # wandb.login()
 
@@ -106,8 +106,8 @@ parsed_train_data = Preprocessor().load_data_labels_from_file(
 
 logging.info(f"Parse train file: {train_filepath}")
 
-raw_labels = parsed_train_data["raw_labels"]
-x_cross_train = parsed_train_data["cross_corpus"]
+raw_labels = parsed_train_data["labels"]
+x_cross_train = parsed_train_data["corpus"]
 
 # Use training label frequency scores as costs -> build relevance matrix
 
@@ -175,10 +175,6 @@ x_cross_train = parsed_train_data["cross_corpus"]
 logging.info("Training model")
 
 start = time.time()
-
-min_leaf_size = 30
-depth = 1
-n_features = 1000
 
 vectorizer_config = {
     "type": "tfidf", 
@@ -256,7 +252,7 @@ reranker_config = {
 }
 """
 
-classifier_config = {
+matcher_config = {
     "type": "sklearnsgdclassifier",
     "kwargs": {
         "loss": "log_loss",            # Logistic regression for routing probabilistic outputs
@@ -311,33 +307,29 @@ classifier_config = {
 }
 """
 
+min_leaf_size = 30
+depth = 3
+
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
 # trn_corpus = Preprocessor.load_data_from_file(train_filepath=training_file)
 
-pipe = SkeletonBuilder(
-    vectorizer_config,
-    transformer_config, 
-    clustering_config, 
-    classifier_config, 
-    reranker_config, # Reranker
-    n_features, 
-    min_leaf_size, 
-    depth, 
-    dtype=np.float32
-    )
+xmodel = XModel(vectorizer_config=vectorizer_config,
+                transformer_config=transformer_config,
+                dimension_config=None,
+                clustering_config=clustering_config,
+                matcher_config=matcher_config,
+                reranker_config=reranker_config,
+                depth=depth,
+                emb_flag=1
+                )
 
-htree = pipe.execute(
-    raw_labels,
-    x_cross_train
-)
+xmodel.train(x_cross_train, raw_labels)
 
 # Print the tree structure
-print(htree)
-
 # Save the tree
 save_dir = os.path.join(os.getcwd(), "test/test_data/saved_trees")  # Ensure this path is correct and writable
-htree.save(save_dir)
+xmodel.save(save_dir)
 
 end = time.time()
 print(f"{end - start} secs of running")
