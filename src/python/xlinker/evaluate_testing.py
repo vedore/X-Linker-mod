@@ -21,6 +21,8 @@ from src.python.utils import (
 
 from tqdm import tqdm
 
+from xmr4el.xmr.model import XModel
+
 start = time.time()
 
 def read_codes_file(filepath):
@@ -84,7 +86,7 @@ args = parser.parse_args()
 """Load the tree"""
 
 # train_disease_100
-trained_xtree = Skeleton.load(args.model_dir)
+trained_xtree = XModel.load(args.model_dir)
 
 # ----------------------------------------------------------------------------
 # Load KB info
