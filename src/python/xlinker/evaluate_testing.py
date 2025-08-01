@@ -132,7 +132,7 @@ print(trained_xtree)
 
 gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") # Need to filter out the ones that werent used.
     
-filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.labels)
+filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.global_to_local_idx)
 
 predicted_labels, hits = trained_xtree.predict(filtered_texts, filtered_labels, topk=10)
 
