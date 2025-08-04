@@ -134,7 +134,9 @@ gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") 
     
 filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.initial_labels)
 
-predicted_labels, hits = trained_xtree.predict(filtered_texts, filtered_labels, topk=10)
+# 10 Counter({0: 1264, 1: 21})
+# 100
+predicted_labels, hits = trained_xtree.predict(filtered_texts, filtered_labels, topk=100)
 
 print(predicted_labels, predicted_labels.shape)
     
