@@ -140,12 +140,22 @@ print(predicted_labels, predicted_labels.shape)
     
 print(hits)
     
+print(predicted_labels)
+    
+print(hits)
+    
 found_ratio = []
-for found, _, _ in hits:
+matcher_found_ratio = []
+for found, _, matcher_found, _ in hits:
     if found == 1:
         found_ratio.append(1)
     else:
         found_ratio.append(0)
+            
+    if matcher_found:
+        matcher_found_ratio.append(1)
+    else:
+        matcher_found_ratio.append(0)
             
 print(Counter(found_ratio))
 
