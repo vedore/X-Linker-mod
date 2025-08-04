@@ -157,7 +157,7 @@ for found, _, matcher_found, _ in hits:
     else:
         matcher_found_ratio.append(0)
             
-print(Counter(found_ratio))
+print(Counter(found_ratio), Counter(matcher_found_ratio))
 
 end = time.time()
 print(f"{end - start} secs of running")
