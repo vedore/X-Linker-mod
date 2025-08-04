@@ -99,9 +99,8 @@ else:
 labels_filepath = f"{KB_DIR}/labels.txt"
 
 parsed_train_data = Preprocessor().load_data_labels_from_file(
-    train_filepath, labels_filepath, # truncate_data=4000
+    train_filepath, labels_filepath, truncate_data=4000
 )
-
 
 
 logging.info(f"Parse train file: {train_filepath}")
@@ -207,6 +206,7 @@ clustering_config = {
 }
 """
 
+"""
 clustering_config = {
     "type": "faisskmeans",
     "kwargs": {
@@ -219,6 +219,12 @@ clustering_config = {
         "seed": 42,
         "tol": 1e-5,               # Tighter tolerance for early stop
     }
+}
+"""
+
+clustering_config = {
+    "type": "balancedkmeans",
+    "kwargs": {"n_clusters": 10}
 }
 
 """
