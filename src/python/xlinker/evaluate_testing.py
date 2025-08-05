@@ -136,7 +136,7 @@ filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_inp
 
 # 10 Counter({0: 1264, 1: 21})
 # 100 Counter({0: 1244, 1: 41}) Counter({1: 1285}) # Optimal classifier 1 job done
-predicted_labels, hits = trained_xtree.predict(filtered_texts, filtered_labels, topk=100, beam_search=1)
+predicted_labels, hits = trained_xtree.predict(filtered_texts, filtered_labels, topk=100, beam_size=1)
 
 print(predicted_labels, predicted_labels.shape)
     
