@@ -224,7 +224,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 16}
+    "kwargs": {"n_clusters": 12}
 }
 
 """
@@ -329,7 +329,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 reranker_config=reranker_config,
                 min_leaf_size=min_leaf_size,
                 max_leaf_size=max_leaf_size,
-                n_workers=6,
+                n_workers=7,
                 depth=depth,
                 emb_flag=1
                 )
