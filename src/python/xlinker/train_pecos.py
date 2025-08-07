@@ -331,7 +331,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 reranker_config=reranker_config,
                 min_leaf_size=min_leaf_size,
                 max_leaf_size=max_leaf_size,
-                n_workers=8,
+                n_workers=10,
                 depth=depth,
                 emb_flag=1
                 )
