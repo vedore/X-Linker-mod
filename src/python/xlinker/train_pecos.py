@@ -13,6 +13,8 @@ from tqdm import tqdm
 # import wandb
 from logging.handlers import RotatingFileHandler
 
+# LD_PRELOAD=/lib/aarch64-linux-gnu/libgomp.so.1
+
 from xmr4el.featurization.preprocessor import Preprocessor
 from xmr4el.xmr.model import XModel
 
@@ -315,7 +317,7 @@ classifier_config = {
 
 min_leaf_size = 20
 max_leaf_size = 500
-depth = 3
+depth = 1
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
@@ -329,7 +331,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 reranker_config=reranker_config,
                 min_leaf_size=min_leaf_size,
                 max_leaf_size=max_leaf_size,
-                n_workers=6,
+                n_workers=8,
                 depth=depth,
                 emb_flag=1
                 )
