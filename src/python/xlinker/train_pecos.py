@@ -226,7 +226,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 16}
+    "kwargs": {"n_clusters": 8}
 }
 
 """
@@ -317,7 +317,7 @@ classifier_config = {
 
 min_leaf_size = 20
 max_leaf_size = 500
-depth = 1
+depth = 4
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
