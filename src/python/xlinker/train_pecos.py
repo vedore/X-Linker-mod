@@ -306,6 +306,7 @@ reranker_config = {
     "kwargs": {
         "boosting_type": "gbdt",
         # "objective": "binary",              # REQUIRED for OneVsRest
+        "device": "gpu",
         "learning_rate": 0.05,
         "n_estimators": 200,
         "max_depth": 7,
