@@ -101,7 +101,7 @@ else:
 labels_filepath = f"{KB_DIR}/labels.txt"
 
 parsed_train_data = Preprocessor().load_data_labels_from_file(
-    train_filepath, labels_filepath, truncate_data=4000
+    train_filepath, labels_filepath, truncate_data=1000
 )
 
 
@@ -226,7 +226,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 8}
+    "kwargs": {"n_clusters": 4}
 }
 
 """
@@ -260,24 +260,26 @@ reranker_config = {
 }
 """
 
+    
 matcher_config = {
-    "type": "sklearnsgdclassifier",
-    "kwargs": {
-        "loss": "log_loss",            # Logistic regression for routing probabilistic outputs
-        "penalty": "l2",
-        "alpha": 5e-5,                 # Slightly weaker regularization to allow more fitting
-        "max_iter": 1500,              # More iterations for difficult nodes
-        "tol": 1e-5,                   # Tighter tolerance for convergence
-        "class_weight": "balanced",    # Handle imbalanced classes better
-        "n_jobs": -1,
-        "random_state": 0,
-        "verbose": 0,
-        "early_stopping": True,
-        "learning_rate": "optimal",
-        "eta0": 0.0,
+"type": "sklearnsgdclassifier",
+"kwargs": {
+    "loss": "log_loss",            # Equivalent to LogisticRegression (probabilistic)
+    "penalty": "l2",               # Default for SGDClassifier; use 'l1' for sparsity
+    "alpha": 0.0001,               # Inverse of regularization strength (C=1/alpha)
+    "max_iter": 1000,              # Ensure convergence
+    "tol": 1e-4,                   # Early stopping tolerance
+    "class_weight": "balanced",          # Balanced classes assumed
+    "n_jobs": -1,                  # Parallelize OvR (if multi-class)
+    "random_state": 0,             # Reproducibility
+    "verbose": 0,
+    "early_stopping": True,        # Stop if validation score plateaus
+    "learning_rate": "optimal",    # Auto-adjusts step size
+    "eta0": 0.0,                   # Initial learning rate (ignored if 'optimal')
     }
 }
 
+"""
 reranker_config = {
     "type": "sklearnsgdclassifier",
     "kwargs": {
@@ -295,29 +297,35 @@ reranker_config = {
         "eta0": 0.005,                # Moderate initial learning rate
     }
 }
-
-
-# Bugged adding for commit
 """
-classifier_config = {
+
+
+    
+reranker_config = {
     "type": "lightgbmclassifier",
     "kwargs": {
-        "objective": "multiclass",
         "boosting_type": "gbdt",
+        # "objective": "binary",              # REQUIRED for OneVsRest
         "learning_rate": 0.05,
-        "n_estimators": 300,
-        "num_leaves": 64,
-        "subsample": 0.8,
-        "colsample_bytree": 0.8,
+        "n_estimators": 200,
+        "max_depth": 7,
+        "min_data_in_leaf": 10,
+        "feature_fraction": 0.8,
+        "bagging_fraction": 0.8,
+        "bagging_freq": 5,
+        "lambda_l1": 1.0,
+        "lambda_l2": 1.0,
+        "class_weight": "balanced",
         "n_jobs": -1,
-        "random_state": 42
+        "random_state": 42,
+        "verbosity": -1,
+        "force_col_wise": True  # Faster for sparse
     }
 }
-"""
 
 min_leaf_size = 20
 max_leaf_size = 500
-depth = 4
+depth = 5
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
@@ -333,7 +341,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 max_leaf_size=max_leaf_size,
                 n_workers=10,
                 depth=depth,
-                emb_flag=1
+                emb_flag=3
                 )
 
 xmodel.train(x_cross_train, raw_labels)
