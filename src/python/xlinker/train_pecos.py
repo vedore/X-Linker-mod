@@ -101,7 +101,7 @@ else:
 labels_filepath = f"{KB_DIR}/labels.txt"
 
 parsed_train_data = Preprocessor().load_data_labels_from_file(
-    train_filepath, labels_filepath, truncate_data=1000
+    train_filepath, labels_filepath, truncate_data=4000
 )
 
 
@@ -226,7 +226,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 4}
+    "kwargs": {"n_clusters": 6}
 }
 
 """
@@ -279,7 +279,7 @@ matcher_config = {
     }
 }
 
-"""
+
 reranker_config = {
     "type": "sklearnsgdclassifier",
     "kwargs": {
@@ -297,10 +297,9 @@ reranker_config = {
         "eta0": 0.005,                # Moderate initial learning rate
     }
 }
+
+
 """
-
-
-    
 reranker_config = {
     "type": "lightgbmclassifier",
     "kwargs": {
@@ -323,10 +322,11 @@ reranker_config = {
         "force_col_wise": True  # Faster for sparse
     }
 }
+"""
 
 min_leaf_size = 20
 max_leaf_size = 500
-depth = 5
+depth = 6
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
