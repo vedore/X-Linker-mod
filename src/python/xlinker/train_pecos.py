@@ -226,8 +226,9 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 6,
-               "iter_limit": 1000}
+    "kwargs": {"n_clusters": 8,
+               "iter_limit": 400,
+               "device": "gpu"}
 }
 
 """
@@ -327,6 +328,7 @@ reranker_config = {
 
 min_leaf_size = 20
 max_leaf_size = 500
+cut_half_cluster=True
 depth = 6
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
@@ -341,6 +343,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 reranker_config=reranker_config,
                 min_leaf_size=min_leaf_size,
                 max_leaf_size=max_leaf_size,
+                cut_half_cluster=cut_half_cluster,
                 n_workers=10,
                 depth=depth,
                 emb_flag=3
