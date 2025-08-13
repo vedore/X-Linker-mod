@@ -101,7 +101,7 @@ else:
 labels_filepath = f"{KB_DIR}/labels.txt"
 
 parsed_train_data = Preprocessor().load_data_labels_from_file(
-    train_filepath, labels_filepath, # truncate_data=4000
+    train_filepath, labels_filepath, truncate_data=8000
 )
 
 
@@ -344,7 +344,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 min_leaf_size=min_leaf_size,
                 max_leaf_size=max_leaf_size,
                 cut_half_cluster=cut_half_cluster,
-                n_workers=10,
+                n_workers=-1,
                 depth=depth,
                 emb_flag=1
                 )
