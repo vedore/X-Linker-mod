@@ -226,7 +226,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 6,
+    "kwargs": {"n_clusters": 12,
                "iter_limit": 400,
                "device": "gpu"}
 }
