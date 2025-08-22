@@ -227,7 +227,7 @@ clustering_config = {
 clustering_config = {
     "type": "balancedkmeans",
     "kwargs": {"n_clusters": 12,
-               "iter_limit": 400,
+               "iter_limit": 600,
                "device": "gpu"}
 }
 
@@ -282,6 +282,7 @@ matcher_config = {
 }
 
 
+"""
 reranker_config = {
     "type": "sklearnsgdclassifier",
     "kwargs": {
@@ -299,15 +300,15 @@ reranker_config = {
         "eta0": 0.005,                # Moderate initial learning rate
     }
 }
-
-
 """
+
+
 reranker_config = {
     "type": "lightgbmclassifier",
     "kwargs": {
         "boosting_type": "gbdt",
-        # "objective": "binary",              # REQUIRED for OneVsRest
-        "device": "gpu",
+        "objective": "binary",              # REQUIRED for OneVsRest
+        "device": "cpu",
         "learning_rate": 0.05,
         "n_estimators": 200,
         "max_depth": 7,
@@ -324,12 +325,11 @@ reranker_config = {
         "force_col_wise": True  # Faster for sparse
     }
 }
-"""
 
-min_leaf_size = 20
-max_leaf_size = 500
+min_leaf_size = 5
+max_leaf_size = 200
 cut_half_cluster=True
-depth = 6
+depth = 5
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
