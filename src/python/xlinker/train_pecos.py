@@ -101,7 +101,7 @@ else:
 labels_filepath = f"{KB_DIR}/labels.txt"
 
 parsed_train_data = Preprocessor().load_data_labels_from_file(
-    train_filepath, labels_filepath, truncate_data=8000
+    train_filepath, labels_filepath, truncate_data=7000
 )
 
 
@@ -329,7 +329,7 @@ reranker_config = {
 min_leaf_size = 5
 max_leaf_size = 200
 cut_half_cluster=True
-depth = 5
+depth = 6
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
