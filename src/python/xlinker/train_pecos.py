@@ -101,7 +101,7 @@ else:
 labels_filepath = f"{KB_DIR}/labels.txt"
 
 parsed_train_data = Preprocessor().load_data_labels_from_file(
-    train_filepath, labels_filepath, truncate_data=7000
+    train_filepath, labels_filepath, truncate_data=4000
 )
 
 
@@ -226,7 +226,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 12,
+    "kwargs": {"n_clusters": 8,
                "iter_limit": 600,
                "device": "gpu"}
 }
@@ -281,9 +281,7 @@ matcher_config = {
     }
 }
 
-
-"""
-reranker_config = {
+ranker_config = {
     "type": "sklearnsgdclassifier",
     "kwargs": {
         "loss": "hinge",
@@ -300,10 +298,9 @@ reranker_config = {
         "eta0": 0.005,                # Moderate initial learning rate
     }
 }
+
 """
-
-
-reranker_config = {
+ranker_config = {
     "type": "lightgbmclassifier",
     "kwargs": {
         "boosting_type": "gbdt",
@@ -325,11 +322,13 @@ reranker_config = {
         "force_col_wise": True  # Faster for sparse
     }
 }
+"""
 
 min_leaf_size = 5
 max_leaf_size = 200
 cut_half_cluster=True
-depth = 6
+ranker_every_layer=False
+depth = 3
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
@@ -340,7 +339,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 dimension_config=None,
                 clustering_config=clustering_config,
                 matcher_config=matcher_config,
-                reranker_config=reranker_config,
+                reranker_config=ranker_config,
                 min_leaf_size=min_leaf_size,
                 max_leaf_size=max_leaf_size,
                 cut_half_cluster=cut_half_cluster,

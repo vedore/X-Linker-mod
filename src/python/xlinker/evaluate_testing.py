@@ -1,6 +1,7 @@
 """Script to evaluate PECOS-EL and X-Linker in datasets"""
 import time
 import os
+import numpy as np
 from typing import Counter
 import pandas as pd
 import src.python.xlinker.ppr as ppr
@@ -136,30 +137,27 @@ filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_inp
 
 # 10 Counter({0: 1264, 1: 21})
 # 100 Counter({0: 1244, 1: 41}) Counter({1: 1285}) # Optimal classifier 1 job done
-predicted_labels, hits, debug_table = trained_xtree.predict(filtered_texts, filtered_labels, topk=50, beam_size=5)
+routes = trained_xtree.predict(filtered_texts, beam_size=5, topk=10, fusion="lp_fusion")
+    
+# print(score_matrix[0]["leaf_global_labels"])
+    
+trained_labels = np.array(trained_xtree.initial_labels)
+    
+# Get global label ids array from the score_matrix
+# global_labels = score_matrix.global_labels  # shape (n_labels,)
 
-print(predicted_labels, predicted_labels.shape)
-    
-print(hits)
-    
-print(predicted_labels)
-    
-print(hits)
-    
-found_ratio = []
-matcher_found_ratio = []
-for found, _, matcher_found, _ in hits:
-    if found == 1:
-        found_ratio.append(1)
-    else:
-        found_ratio.append(0)
-            
-    if matcher_found:
-        matcher_found_ratio.append(1)
-    else:
-        matcher_found_ratio.append(0)
-            
-print(Counter(found_ratio), Counter(matcher_found_ratio))
+hit_counts = []
+for r in routes:
+    qi = r["query_index"]
+    # union of all labels reachable by the final surviving leaves
+    cand = set()
+    for p in r.get("paths", []):
+        cand.update(trained_labels[p.get("leaf_global_labels", [])])
+    gold = set(filtered_labels[qi])
+    hit_counts.append(len(cand & gold))
+        
+print("Hit counts per query:", Counter(hit_counts))
+print("Average hits:", np.mean(hit_counts))
 
 end = time.time()
 print(f"{end - start} secs of running")
