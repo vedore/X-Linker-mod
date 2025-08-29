@@ -70,6 +70,7 @@ parser.add_argument("-ent_type", type=str, required=True)
 parser.add_argument("-kb", type=str, required=True)
 parser.add_argument("-model_dir", type=str, required=True)
 parser.add_argument("-top_k", type=int, default=5)
+parser.add_argument("-beam_size", type=int, default=5)
 parser.add_argument("-clustering", type=str, default="pifa")
 parser.add_argument("--abbrv", default=False, action=BooleanOptionalAction)
 parser.add_argument("--pipeline", default=False, action=BooleanOptionalAction)
@@ -137,7 +138,7 @@ filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_inp
 
 # 10 Counter({0: 1264, 1: 21})
 # 100 Counter({0: 1244, 1: 41}) Counter({1: 1285}) # Optimal classifier 1 job done
-routes = trained_xtree.predict(filtered_texts, beam_size=10, topk=10, fusion="lp_fusion")
+routes = trained_xtree.predict(filtered_texts, beam_size=args.beam_size, topk=args.top_k, fusion="lp_fusion")
     
 # print(score_matrix[0]["leaf_global_labels"])
     
