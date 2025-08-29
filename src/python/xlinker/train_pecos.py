@@ -49,6 +49,7 @@ parser.add_argument("-batch_size", type=int, default=32, help="")
 parser.add_argument("--only_kb", action="store_true", help="")
 parser.add_argument("--max_inst", type=int, help="")
 parser.add_argument("--batch_gen_workers", type=int, help="")
+parser.add_argument("-labels", type=int, default=8000)
 args = parser.parse_args()
 
 # ------------------------------------------------------------
@@ -100,8 +101,10 @@ else:
 
 labels_filepath = f"{KB_DIR}/labels.txt"
 
+print(f"labels: {args.labels}")
+
 parsed_train_data = Preprocessor().load_data_labels_from_file(
-    train_filepath, labels_filepath, truncate_data=4000
+    train_filepath, labels_filepath, truncate_data=args.labels
 )
 
 
