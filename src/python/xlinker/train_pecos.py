@@ -229,7 +229,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 16,
+    "kwargs": {"n_clusters": 8,
                "iter_limit": 1000,
                "device": "gpu"}
 }
@@ -348,7 +348,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 cut_half_cluster=cut_half_cluster,
                 n_workers=-1,
                 depth=depth,
-                emb_flag=3
+                emb_flag=2
                 )
 
 xmodel.train(x_cross_train, raw_labels)
