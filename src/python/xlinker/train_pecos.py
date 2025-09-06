@@ -270,7 +270,7 @@ matcher_config = {
 "type": "sklearnsgdclassifier",
 "kwargs": {
     "loss": "log_loss",            # Equivalent to LogisticRegression (probabilistic)
-    "penalty": "l2",               # Default for SGDClassifier; use 'l1' for sparsity
+    "penalty": "l1",               # Default for SGDClassifier; use 'l1' for sparsity
     "alpha": 0.0001,               # Inverse of regularization strength (C=1/alpha)
     "max_iter": 1000,              # Ensure convergence
     "tol": 1e-4,                   # Early stopping tolerance
@@ -287,18 +287,18 @@ matcher_config = {
 ranker_config = {
     "type": "sklearnsgdclassifier",
     "kwargs": {
-        "loss": "hinge",
-        "penalty": "l2",
-        "alpha": 1e-4,                # Maintain strong regularization to avoid overfitting
-        "max_iter": 2000,             # Extra iterations for ranking stability
-        "tol": 1e-5,
-        "class_weight": "balanced",   # Essential for skewed reranker data
-        "n_jobs": -1,
+        "loss": "hinge",               # Margin loss (like SVM; no probabilities)
+        "penalty": "l1",               # Standard for ranking (use 'l1' for sparsity)
+        "alpha": 0.0001,               # Stronger regularization (C=1/alpha)
+        "max_iter": 1000,              # Ensure convergence
+        "tol": 1e-4,
+        # "class_weight": "balanced", # Better for some reason # Emphasize positives # "class_weight": "balanced",    # Critical for imbalanced ranking data
+        "n_jobs": -1,                  # Parallelize OvR if multi-label
         "random_state": 0,
         "verbose": 0,
-        "early_stopping": True,
-        "learning_rate": "adaptive",  # Adaptive for noisy gradients
-        "eta0": 0.005,                # Moderate initial learning rate
+        "early_stopping": False,
+        "learning_rate": "adaptive",   # Handles noisy gradients better
+        "eta0": 0.01,                  # Higher initial learning rate for ranking
     }
 }
 
