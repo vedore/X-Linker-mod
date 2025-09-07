@@ -229,7 +229,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 12,
+    "kwargs": {"n_clusters": 8,
                "iter_limit": 1000,
                "device": "gpu"}
 }
@@ -330,8 +330,8 @@ ranker_config = {
 min_leaf_size = 5
 max_leaf_size = 200
 cut_half_cluster=True
-ranker_every_layer=False
-depth = 2
+ranker_every_layer=True
+depth = 4
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
