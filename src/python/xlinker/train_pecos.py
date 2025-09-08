@@ -229,7 +229,7 @@ clustering_config = {
 
 clustering_config = {
     "type": "balancedkmeans",
-    "kwargs": {"n_clusters": 8,
+    "kwargs": {"n_clusters": 6,
                "iter_limit": 1000,
                "device": "gpu"}
 }
@@ -240,7 +240,7 @@ classifier_config = {
     "kwargs": {
         "solver": "liblinear",              # robust and fast for multinomial
         "penalty": "l1",                # standard regularization
-        "C": 1.0,                       # 1.0 is a good default; you can grid‑search .1 → 10
+        "C": 1.0,                       # 1.0 is a good default; you can grid-search .1 → 10
         "class_weight": None,           # assume roughly balanced classes at each node
         "max_iter": 1000,               # ensure convergence
         "n_jobs": -1,                   # parallelize across CPUs
@@ -331,7 +331,7 @@ min_leaf_size = 5
 max_leaf_size = 200
 cut_half_cluster=True
 ranker_every_layer=True
-depth = 3
+depth = 4
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
