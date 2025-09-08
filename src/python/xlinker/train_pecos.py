@@ -348,7 +348,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 cut_half_cluster=cut_half_cluster,
                 n_workers=-1,
                 depth=depth,
-                emb_flag=2
+                emb_flag=3
                 )
 
 xmodel.train(x_cross_train, raw_labels)
