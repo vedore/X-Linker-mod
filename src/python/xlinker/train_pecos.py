@@ -331,7 +331,7 @@ min_leaf_size = 5
 max_leaf_size = 200
 cut_half_cluster=True
 ranker_every_layer=True
-depth = 4
+depth = 5
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
@@ -348,7 +348,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 cut_half_cluster=cut_half_cluster,
                 n_workers=-1,
                 depth=depth,
-                emb_flag=3
+                emb_flag=2
                 )
 
 xmodel.train(x_cross_train, raw_labels)
