@@ -331,7 +331,7 @@ min_leaf_size = 5
 max_leaf_size = 200
 cut_half_cluster=True
 ranker_every_layer=True
-depth = 4
+depth = 2
 
 # training_file = os.path.join(os.getcwd(), "test/test_data/train/disease/train_Disease_100.txt")
 
