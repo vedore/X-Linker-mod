@@ -90,6 +90,8 @@ args = parser.parse_args()
 # train_disease_100
 trained_xtree = XModel.load(args.model_dir)
 
+print(len(trained_xtree.initial_labels()))
+
 # ----------------------------------------------------------------------------
 # Load KB info
 # ----------------------------------------------------------------------------
