@@ -346,7 +346,7 @@ xmodel = XModel(vectorizer_config=vectorizer_config,
                 min_leaf_size=min_leaf_size,
                 max_leaf_size=max_leaf_size,
                 cut_half_cluster=cut_half_cluster,
-                n_workers=-1,
+                n_workers=16,
                 depth=depth,
                 emb_flag=2
                 )
