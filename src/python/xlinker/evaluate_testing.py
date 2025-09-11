@@ -90,7 +90,9 @@ args = parser.parse_args()
 # train_disease_100
 trained_xtree = XModel.load(args.model_dir)
 
-print(len(trained_xtree.initial_labels))
+print(trained_xtree.initial_labels)
+
+# exit()
 
 # ----------------------------------------------------------------------------
 # Load KB info
@@ -137,6 +139,10 @@ code_lists = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt")
 gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") # Need to filter out the ones that werent used.
     
 filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.initial_labels)
+
+print(filtered_labels)
+
+exit()
 
 # 10 Counter({0: 1264, 1: 21})
 # 100 Counter({0: 1244, 1: 41}) Counter({1: 1285}) # Optimal classifier 1 job done
