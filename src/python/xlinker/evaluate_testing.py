@@ -90,7 +90,7 @@ args = parser.parse_args()
 # train_disease_100
 trained_xtree = XModel.load(args.model_dir)
 
-# print(trained_xtree.initial_labels)
+print(len(trained_xtree.initial_labels))
 
 # exit()
 
@@ -145,14 +145,13 @@ counter_label_list_2 = 0
 for label_list in filtered_labels:
     if len(label_list) > 1:
         counter_label_list_2 += 1
-        print(label_list)
+        # print(label_list)
     else:
         counter_label_list_1 += 1
 
-print(counter_label_list_2, counter_label_list_1)
+# print(counter_label_list_2, counter_label_list_1)
 # print(filtered_labels)
 
-exit()
 
 # 10 Counter({0: 1264, 1: 21})
 # 100 Counter({0: 1244, 1: 41}) Counter({1: 1285}) # Optimal classifier 1 job done
