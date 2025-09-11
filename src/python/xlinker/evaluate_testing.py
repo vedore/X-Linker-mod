@@ -124,6 +124,13 @@ with open(test_path, "r") as f:
     f.close()
 
 test_input, test_annots = prepare_input(test_annots_raw, abbreviations, id_2_name)
+
+print(test_input, len(test_input))
+
+print(test_annots, len(test_annots))
+
+exit()
+
 print("Test instances loaded!")
 
 # ----------------------------------------------------------------------------
