@@ -178,10 +178,11 @@ trained_labels = np.array(trained_xtree.initial_labels)
 hit_counts = []
 for r in routes:
     qi = r["query_index"]
+    print(qi)
     # union of all labels reachable by the final surviving leaves
     cand = set()
-    for p in r.get("paths", []):
-        cand.update(trained_labels[p.get("leaf_global_labels", [])])
+    # print(r.get("final_path").get("leaf_global_labels", []))
+    cand.update(trained_labels[r.get("final_path").get("leaf_global_labels", [])])
     gold = set(filtered_labels[qi])
     hit_counts.append(len(cand & gold))
         
