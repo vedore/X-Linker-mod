@@ -38,7 +38,7 @@ def read_codes_file(filepath):
 
     return code_lists
 
-def filter_labels_and_inputs(gold_labels, input_texts, allowed_labels):
+def filter_labels_and_inputs(gold_labels, input_texts, input_annots, allowed_labels):
     """
     Filters out gold_labels (list of lists) and corresponding input_texts
     where the first label in each gold label list is not in allowed_labels.
@@ -54,14 +54,17 @@ def filter_labels_and_inputs(gold_labels, input_texts, allowed_labels):
     allowed_set = set(allowed_labels)
 
     filtered_labels = []
+    filtered_annots = []
     filtered_texts = []
 
-    for label_list, text in zip(gold_labels, input_texts):
+    for label_list, text, annot in zip(gold_labels, input_texts, input_annots):
         if label_list and label_list[0] in allowed_set:
             filtered_labels.append(label_list)
             filtered_texts.append(text)
+            filtered_annots.append(annot)
+            
 
-    return filtered_labels, filtered_texts
+    return filtered_labels, filtered_texts, filtered_annots
 
 # Parse arguments
 parser = ArgumentParser()
@@ -145,7 +148,7 @@ code_lists = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt")
 
 gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") # Need to filter out the ones that werent used.
     
-filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.initial_labels)
+filtered_labels, filtered_texts, filtered_annots = filter_labels_and_inputs(gold_labels, test_input, test_annots, trained_xtree.initial_labels)
 
 counter_label_list_1 = 0
 counter_label_list_2 = 0
@@ -163,7 +166,7 @@ for label_list in filtered_labels:
 # 10 Counter({0: 1264, 1: 21})
 # 100 Counter({0: 1244, 1: 41}) Counter({1: 1285}) # Optimal classifier 1 job done
 print(f"Beam Size: {args.beam_size}, TopK: {args.top_k}")
-routes = trained_xtree.predict(filtered_texts, beam_size=args.beam_size, topk=args.top_k, fusion="lp_fusion")
+routes, scores = trained_xtree.predict(filtered_texts, beam_size=args.beam_size, topk=args.top_k, fusion="lp_fusion")
     
 # print(score_matrix[0]["leaf_global_labels"])
     
@@ -194,15 +197,15 @@ print(f"{end - start} secs of running")
 
 # [[1, 2, 3, 4, 5]]
 
-exit()
+# exit()
 
 print("Linking test instances...")
 
 output = []
-pbar = tqdm(total=len(test_annots))
+pbar = tqdm(total=len(filtered_annots))
 
-for i, annotation in enumerate(test_annots):
-    mention_preds = predicted_labels[i, :]
+for i, annotation in enumerate(filtered_annots):
+    mention_preds = scores[i, :]
 
     if args.pipeline:
         # Apply pipeline to every mention in test set
