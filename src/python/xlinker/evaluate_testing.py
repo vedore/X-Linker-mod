@@ -140,13 +140,16 @@ gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") 
     
 filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.initial_labels)
 
-counter = 0
+counter_label_list_1 = 0
+counter_label_list_2 = 0
 for label_list in filtered_labels:
     if len(label_list) > 1:
-        counter += 1
+        counter_label_list_2 += 1
         print(label_list)
+    else:
+        counter_label_list_1 += 1
 
-print(counter)
+print(counter_label_list_2, counter_label_list_1)
 # print(filtered_labels)
 
 exit()
