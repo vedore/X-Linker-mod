@@ -259,14 +259,14 @@ if args.ppr:
     # Build the disambiguation graph, run PPR and process the results
     ppr.run(entity_type=args.ent_type, kb=args.kb, reel_dir=f"data/REEL/{run_name}")
     
-    topk_accuracies = calculate_topk_accuracy(predictions_df, [1, 3, 5, 10])
+    topk_accuracies = calculate_topk_accuracy(predictions_df, [1, 3, 5, 10, 50, 100, 200, 500])
     print(f"Top-k accuracies with PPR: {topk_accuracies}")
 
 else:
     # Evaluate model performance
     pred_path = f"data/evaluation_{args.dataset}_{args.ent_type}.tsv"
     predictions_df.to_csv(pred_path, sep="\t", index=False)
-    topk_accuracies = calculate_topk_accuracy(predictions_df, [1, 3, 5, 10])
+    topk_accuracies = calculate_topk_accuracy(predictions_df, [1, 3, 5, 10, 50, 100, 200, 500])
     print(f"Top-k accuracies Without PPR: {topk_accuracies}")
     topK_list = [list(topk_accuracies.values())]
     df = pd.DataFrame(topK_list)
