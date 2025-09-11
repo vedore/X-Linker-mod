@@ -90,7 +90,7 @@ args = parser.parse_args()
 # train_disease_100
 trained_xtree = XModel.load(args.model_dir)
 
-print(trained_xtree.initial_labels)
+# print(trained_xtree.initial_labels)
 
 # exit()
 
@@ -140,7 +140,14 @@ gold_labels = read_codes_file("test/test_data/labels_bc5cdr_disease_medic.txt") 
     
 filtered_labels, filtered_texts = filter_labels_and_inputs(gold_labels, test_input, trained_xtree.initial_labels)
 
-print(filtered_labels)
+counter = 0
+for label_list in filtered_labels:
+    if len(label_list) > 1:
+        counter += 1
+        print(label_list)
+
+print(counter)
+# print(filtered_labels)
 
 exit()
 
