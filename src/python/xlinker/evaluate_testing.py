@@ -166,7 +166,7 @@ for label_list in filtered_labels:
 # 10 Counter({0: 1264, 1: 21})
 # 100 Counter({0: 1244, 1: 41}) Counter({1: 1285}) # Optimal classifier 1 job done
 print(f"Beam Size: {args.beam_size}, TopK: {args.top_k}")
-routes, scores = trained_xtree.predict(filtered_texts, beam_size=args.beam_size, topk=args.top_k, fusion="lp_fusion")
+routes, scores = trained_xtree.predict(filtered_texts, beam_size=args.beam_size, topk=args.top_k, fusion="lp_fusion", topk_mode="global")
     
 # print(score_matrix[0]["leaf_global_labels"])
     
@@ -181,7 +181,10 @@ for r in routes:
     print(qi)
     # union of all labels reachable by the final surviving leaves
     cand = set()
-    # print(r.get("final_path").get("leaf_global_labels", []))
+    # for p in r.get("paths", []):
+        # print("Leaf paths", p.get("leaf_global_labels"))
+        # print("Leaf Scores", p.get("scores"), "\n")
+    print("Final path", r.get("final_path").get("leaf_global_labels", []), "\n")
     cand.update(trained_labels[r.get("final_path").get("leaf_global_labels", [])])
     gold = set(filtered_labels[qi])
     hit_counts.append(len(cand & gold))
