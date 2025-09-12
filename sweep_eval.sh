@@ -48,7 +48,6 @@ echo "Dataset=${DATASET}  EntType=${ENT_TYPE}  KB=${KB}"
 echo
 
 BEAMS=(1 5 10 15 20 25 30 40 50)
-k = 500
 
 for b in "${BEAMS[@]}"; do
     echo ">>> Running: -beam_size ${b}"
@@ -58,7 +57,7 @@ for b in "${BEAMS[@]}"; do
       -kb "${KB}" \
       -model_dir "${MODEL_DIR}" \
       -beam_size "${b}" \
-      -top_k "${k}" \
+      -top_k "${500}" \
       --abbrv --pipeline --threshold "${THRESHOLD}" --ppr
     echo
 done
