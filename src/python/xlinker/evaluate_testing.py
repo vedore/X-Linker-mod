@@ -166,7 +166,9 @@ for label_list in filtered_labels:
 # 10 Counter({0: 1264, 1: 21})
 # 100 Counter({0: 1244, 1: 41}) Counter({1: 1285}) # Optimal classifier 1 job done
 print(f"Beam Size: {args.beam_size}, TopK: {args.top_k}")
-routes, scores = trained_xtree.predict(filtered_texts, beam_size=args.beam_size, topk=args.top_k, fusion="lp_fusion", topk_mode="global")
+routes, scores = trained_xtree.predict(filtered_texts, beam_size=args.beam_size, topk=args.top_k, 
+                                       fusion="lp_fusion", topk_mode="global", 
+                                       topk_inside_global=200)
     
 # print(score_matrix[0]["leaf_global_labels"])
     
