@@ -170,11 +170,14 @@ routes, scores = trained_xtree.predict(filtered_texts, beam_size=args.beam_size,
     
 # print(score_matrix[0]["leaf_global_labels"])
     
+print(scores)    
+
 trained_labels = np.array(trained_xtree.initial_labels)
     
 # Get global label ids array from the score_matrix
 # global_labels = score_matrix.global_labels  # shape (n_labels,)
 
+"""
 hit_counts = []
 for r in routes:
     qi = r["query_index"]
@@ -194,6 +197,7 @@ print("Average hits:", np.mean(hit_counts))
 
 end = time.time()
 print(f"{end - start} secs of running")
+"""
 
 # x_linker_preds = custom_xtf.predict(
 #     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k

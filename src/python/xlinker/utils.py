@@ -1,6 +1,5 @@
 """Utility functions for PECOS-EL models"""
 import os
-import numpy as np
 # from pecos.xmc import Indexer, LabelEmbeddingFactory
 # from pecos.utils.cluster_util import ClusterChain
 # from pecos.utils import smat_util
@@ -263,8 +262,6 @@ def process_pecos_preds(
         pred_label = index_2_label[str(pred_index)]
         pred_labels.append(pred_label)
 
-    # print(annotation[4], pred_labels, pred_scores)
-
     if inference:
         output = []
         pred_names = [label_2_name[label] for label in pred_labels]
@@ -289,53 +286,103 @@ def process_pecos_preds(
 def apply_pipeline_to_mention(
     input_text,
     annotation,
-    mention_preds,      # CSR matrix with similarity scores (higher = better)
+    mention_preds,
     kb_names,
     kb_synonyms,
     name_2_id,
     synonym_2_id,
     index_2_label,
-    top_k=5,
+    top_k=1,
     fuzzy_top_k=1,
-    threshold=0.0,      # Minimum relevance score
-    always_include_model=True
+    threshold=0.15,
 ):
-    # Process model predictions
-    pred_labels = []
-    pred_scores = []
-    
-    # Convert CSR matrix to dense format and get top-k HIGHEST scores
-    dense_scores = mention_preds.toarray().flatten()
-    if len(dense_scores) == 0:
-        top_k_indices = []
-    else:
-        top_k_indices = np.argpartition(-dense_scores, top_k)[:top_k]  # negate for descending
+    """
+    Apply X-Linker pipeline to given input mention. The pipeline includes
+    the string matcher and the processing of the output of PECOS-EL model.
 
-    for idx in top_k_indices:
-        score = float(dense_scores[idx])
-        if score >= 0.0:  # Threshold shoud be here, higher scores = more confident
-            pred_labels.append(index_2_label[str(idx)])
-            pred_scores.append(score)
-    
-    # Process KB matches (unchanged)
-    kb_matches = map_to_kb(input_text, kb_names, kb_synonyms, name_2_id, synonym_2_id, fuzzy_top_k)
-    
-    # Combine results
-    output_labels = pred_labels
-    output_scores = pred_scores
-    
-    if always_include_model:
-        # Add KB matches AFTER model predictions
-        for match in kb_matches:
-            output_labels.append(match["kb_id"])
-            output_scores.append(match["score"])  # Assuming KB scores are also 0–1
-        
-    return [
-        annotation[0],  # doc_id
-        annotation[1],  # start
-        annotation[2],  # end
-        annotation[3],  # text
-        annotation[4],  # true label
-        output_labels,
-        output_scores
+    Parameters
+    ----------
+    input_text : str
+        The input text containing the mention.
+    annotation : list of lists
+        A list containing the annotation information for the mention, including
+        doc_id, annot_start, annot_end, annot_text, annot_kb_id.
+    mention_preds : csr_matrix
+        The predictions of the PECOS-EL model for the mention.
+    kb_names : list of str
+        A list of knowledge base names.
+    kb_synonyms : list of str
+        A list of knowledge base synonyms.
+    name_2_id : dict
+        A dictionary mapping entity names to labels (aka KB identifiers).
+    synonym_2_id : dict
+        A dictionary mapping entity synonyms to labels (aka KB identifiers).
+    index_2_label : dict
+        A dictionary mapping indices to labels. Each KB entity has name, 
+        label (or identifier) and an index.
+    top_k : int
+        The number of top-k predictions to return. Default is 1.
+    fuzzy_top_k : int
+        The number of top-k fuzzy matches to return. Default is 1.
+    threshold : float
+        The threshold for the prediction score. Default is 0.15.
+
+    Returns
+    -------
+    output : list
+        A list containing the updated annotation information for the
+        mention, including doc_id, annot_start, annot_end, annot_text, annot_kb_id,
+        labels, and scores.
+    """
+
+    output = []
+    annot_text = annotation[3]
+    true_label = annotation[4]
+    # -----------------------------------------
+    #   Get exact match from KB
+    # -----------------------------------------
+    kb_matches = map_to_kb(
+        input_text, kb_names, kb_synonyms, name_2_id, synonym_2_id, top_k=fuzzy_top_k
+    )
+
+    # -----------------------------------------------
+    # Process X-Linker predictions
+    # -----------------------------------------------
+    pecos_output = process_pecos_preds(annotation, mention_preds, index_2_label, top_k)
+    labels_to_add, scores_to_add = [], []
+
+    if kb_matches[0]["score"] == 1.0:
+        labels_to_add.append(kb_matches[0]["kb_id"])
+        scores_to_add.append(kb_matches[0]["score"])
+
+        if pecos_output[6][0] == 1.0:
+            labels_to_add.append(pecos_output[5][0])
+            scores_to_add.append(pecos_output[6][0])
+
+    else:
+
+        if pecos_output[6][0] >= threshold:
+            labels_to_add.append(pecos_output[5][0])
+            scores_to_add.append(pecos_output[6][0])
+
+        else:
+
+            for i, label in enumerate(pecos_output[5]):
+                labels_to_add.append(label)
+                scores_to_add.append(pecos_output[6][i])
+
+            for i, match in enumerate(kb_matches):
+                labels_to_add.append(match["kb_id"])
+                scores_to_add.append(match["score"])
+
+    output = [
+        annotation[0],
+        annotation[1],
+        annotation[2],
+        annotation[3],
+        annotation[4],
+        labels_to_add,
+        scores_to_add,
     ]
+
+    return output
