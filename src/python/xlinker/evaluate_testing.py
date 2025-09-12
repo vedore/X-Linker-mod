@@ -168,7 +168,7 @@ for label_list in filtered_labels:
 print(f"Beam Size: {args.beam_size}, TopK: {args.top_k}")
 routes, scores = trained_xtree.predict(filtered_texts, beam_size=args.beam_size, topk=args.top_k, 
                                        fusion="lp_fusion", topk_mode="global", 
-                                       topk_inside_global=100)
+                                       topk_inside_global=50)
     
 # print(score_matrix[0]["leaf_global_labels"])
     
