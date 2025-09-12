@@ -321,6 +321,8 @@ def process_ppr_results(entity_type, reel_dir):
 
     for line in data:
 
+        print(line)
+
         if line != "\n":
 
             if line[0] == "=":
