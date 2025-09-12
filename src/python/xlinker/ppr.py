@@ -331,7 +331,7 @@ def process_ppr_results(entity_type, reel_dir):
 
                 entity_count += 1
                 answer = (
-                    line.split("\t")[3].split("ANS=")[1].strip("\n").replace("_", ":")
+                    line.split("\t")[2].split("ANS=")[1].strip("\n").replace("_", ":")
                 )
 
                 if "OMIM" in answer:
