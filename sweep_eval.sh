@@ -48,18 +48,21 @@ echo "Dataset=${DATASET}  EntType=${ENT_TYPE}  KB=${KB}"
 echo
 
 BEAMS=(1 5 10 15 20 25 30 40 50)
+TOPKS=(500)
 
 for b in "${BEAMS[@]}"; do
-    echo ">>> Running: -beam_size ${b}"
+  for k in "${TOPKS[@]}"; do
+    echo ">>> Running: -beam_size ${b} -top_k ${k}"
     ${PY_CMD} src/python/xlinker/evaluate_testing.py \
       -dataset "${DATASET}" \
       -ent_type "${ENT_TYPE}" \
       -kb "${KB}" \
       -model_dir "${MODEL_DIR}" \
       -beam_size "${b}" \
-      -top_k "${500}" \
+      -top_k "${k}" \
       --abbrv --pipeline --threshold "${THRESHOLD}" --ppr
     echo
+  done
 done
 
 echo "All runs completed."
