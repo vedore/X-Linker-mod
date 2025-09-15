@@ -234,7 +234,7 @@ dimension_config = {
                "n_iter": 5, 
                "n_oversamples": 10, 
                "power_iteration_normalizer": "auto", 
-               "random_state": 42, 
+               "random_state": 44, 
                "tol": 0.0
     }
 }
@@ -288,7 +288,7 @@ matcher_config = {
     "tol": 1e-4,                   # Early stopping tolerance
     "class_weight": "balanced",          # Balanced classes assumed
     "n_jobs": -1,                  # Parallelize OvR (if multi-class)
-    "random_state": 42,             # Reproducibility
+    "random_state": 44,             # Reproducibility
     "verbose": 0,
     "early_stopping": True,        # Stop if validation score plateaus
     "learning_rate": "optimal",    # Auto-adjusts step size
@@ -306,7 +306,7 @@ ranker_config = {
         "tol": 1e-4,
         # "class_weight": "balanced", # Better for some reason # Emphasize positives # "class_weight": "balanced",    # Critical for imbalanced ranking data
         "n_jobs": -1,                  # Parallelize OvR if multi-label
-        "random_state": 42,
+        "random_state": 44,
         "verbose": 0,
         "early_stopping": False,
         "learning_rate": "adaptive",   # Handles noisy gradients better
