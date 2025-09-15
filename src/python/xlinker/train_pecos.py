@@ -227,6 +227,18 @@ clustering_config = {
 }
 """
 
+dimension_config = {
+    "type": "sklearntruncatedsvd", 
+    "kwargs": {"n_components": 1000, 
+               "algorithm": "randomized", 
+               "n_iter": 5, 
+               "n_oversamples": 10, 
+               "power_iteration_normalizer": "auto", 
+               "random_state": 42, 
+               "tol": 0.0
+    }
+}
+
 clustering_config = {
     "type": "balancedkmeans",
     "kwargs": {"n_clusters": 6,
@@ -276,7 +288,7 @@ matcher_config = {
     "tol": 1e-4,                   # Early stopping tolerance
     "class_weight": "balanced",          # Balanced classes assumed
     "n_jobs": -1,                  # Parallelize OvR (if multi-class)
-    "random_state": 0,             # Reproducibility
+    "random_state": 42,             # Reproducibility
     "verbose": 0,
     "early_stopping": True,        # Stop if validation score plateaus
     "learning_rate": "optimal",    # Auto-adjusts step size
@@ -294,7 +306,7 @@ ranker_config = {
         "tol": 1e-4,
         # "class_weight": "balanced", # Better for some reason # Emphasize positives # "class_weight": "balanced",    # Critical for imbalanced ranking data
         "n_jobs": -1,                  # Parallelize OvR if multi-label
-        "random_state": 0,
+        "random_state": 42,
         "verbose": 0,
         "early_stopping": False,
         "learning_rate": "adaptive",   # Handles noisy gradients better
@@ -339,7 +351,7 @@ depth = 4
 
 xmodel = XModel(vectorizer_config=vectorizer_config,
                 transformer_config=transformer_config,
-                dimension_config=None,
+                dimension_config=dimension_config,
                 clustering_config=clustering_config,
                 matcher_config=matcher_config,
                 ranker_config=ranker_config,
