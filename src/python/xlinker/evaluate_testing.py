@@ -214,13 +214,13 @@ print("Linking test instances...")
 
 # print(type(kb_names), type(kb_synonyms), type(name_2_id_lower), type(synonym_2_id_lower), type(index_2_id))
 
-trimmed_len = len(filtered_annots)
+# trimmed_len = len(filtered_annots)
 
-kb_names = kb_names[:trimmed_len]
-kb_synonyms = kb_synonyms[:trimmed_len]
-name_2_id_lower_trim    = dict(islice(name_2_id_lower.items(), trimmed_len))
-synonym_2_id_lower_trim = dict(islice(synonym_2_id_lower.items(), trimmed_len))
-index_2_id_trim         = dict(islice(index_2_id.items(), trimmed_len))
+# kb_names = kb_names[:trimmed_len]
+# kb_synonyms = kb_synonyms[:trimmed_len]
+# name_2_id_lower_trim    = dict(islice(name_2_id_lower.items(), trimmed_len))
+# synonym_2_id_lower_trim = dict(islice(synonym_2_id_lower.items(), trimmed_len))
+# index_2_id_trim         = dict(islice(index_2_id.items(), trimmed_len))
 
 output = []
 pbar = tqdm(total=len(filtered_annots))
