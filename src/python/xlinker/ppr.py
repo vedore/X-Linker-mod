@@ -329,7 +329,12 @@ def process_ppr_results(entity_type, reel_dir):
             if line[0] == "=":
                 doc_id = line.strip("\n").split(" ")[1]
 
+            elif line.split("\t") <= 2:
+                continue
+
             else:
+                
+                # Some lines have only 2, need to be descarded
                 entity = line.split("\t")[1].split("=")[1]
 
                 entity_count += 1
