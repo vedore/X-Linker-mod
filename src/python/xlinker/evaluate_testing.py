@@ -211,6 +211,8 @@ print(f"{end - start} secs of running")
 
 print("Linking test instances...")
 
+print(type(kb_names), type(kb_synonyms), type(name_2_id_lower), type(synonym_2_id_lower), type(index_2_id))
+
 output = []
 pbar = tqdm(total=len(filtered_annots))
 
