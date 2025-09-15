@@ -329,7 +329,7 @@ def process_ppr_results(entity_type, reel_dir):
             if line[0] == "=":
                 doc_id = line.strip("\n").split(" ")[1]
 
-            elif line.split("\t") <= 2:
+            elif len(line.split("\t")) <= 2:
                 continue
 
             else:
