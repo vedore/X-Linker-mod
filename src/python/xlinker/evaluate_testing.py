@@ -220,7 +220,7 @@ for i, annotation in enumerate(filtered_annots):
     if args.pipeline:
         # Apply pipeline to every mention in test set
         mention_output = apply_pipeline_to_mention(
-            test_input[i],
+            filtered_texts[i],
             annotation,
             mention_preds,
             kb_names,
