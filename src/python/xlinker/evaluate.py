@@ -1,9 +1,6 @@
 """Script to evaluate PECOS-EL and X-Linker in datasets"""
-import time
-import os
 import pandas as pd
-import src.python.xlinker.ppr as ppr
-
+import os
 from argparse import ArgumentParser, BooleanOptionalAction
 from src.python.xlinker.utils import (
     load_model,
@@ -11,19 +8,13 @@ from src.python.xlinker.utils import (
     process_pecos_preds,
     apply_pipeline_to_mention,
 )
-
 from src.python.utils import (
     get_dataset_abbreviations,
     prepare_input,
     calculate_topk_accuracy,
 )
-
+import src.python.xlinker.ppr as ppr
 from tqdm import tqdm
-
-from xmr4el.xmr.skeleton import Skeleton
-from xmr4el.predict.predict import Predict
-
-start = time.time()
 
 # Parse arguments
 parser = ArgumentParser()
@@ -44,12 +35,8 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Load and setup model to apply
 # ----------------------------------------------------------------------------
-# custom_xtf, tfidf_model, cluster_chain = load_model(args.model_dir, args.clustering)
-# print("model loaded!")
-"""Load the tree"""
-
-# train_disease_100
-trained_xtree = Skeleton.load(args.model_dir)
+custom_xtf, tfidf_model, cluster_chain = load_model(args.model_dir, args.clustering)
+print("model loaded!")
 
 # ----------------------------------------------------------------------------
 # Load KB info
@@ -86,35 +73,9 @@ print("Test instances loaded!")
 # ----------------------------------------------------------------------------
 # Apply model to test instances
 # ----------------------------------------------------------------------------
-
-transformer_config = {
-    "type": "sentencetbiobert",
-    "kwargs": {"batch_size": 400}
-    }
-
-encoder_config = {
-    "type": "minilm_l6_v2",
-    "kwargs": {}
-}
-
-"""
-encoder_config = {
-    "type": "biolinkbert",
-    "kwargs": {}
-}
-"""
-
-
-x_linker_preds = Predict.inference(trained_xtree, test_input, transformer_config, k=args.top_k)
-
-# x_linker_preds = custom_xtf.predict(
-#     test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
-# )
-
-# [[1, 2, 3, 4, 5]]
-
-print(x_linker_preds, x_linker_preds.shape)
-
+x_linker_preds = custom_xtf.predict(
+    test_input, X_feat=tfidf_model.predict(test_input), only_topk=args.top_k
+)
 print("Linking test instances...")
 
 output = []
@@ -163,7 +124,6 @@ if args.ppr:
     os.makedirs(f"data/REEL/{run_name}", exist_ok=True)
     pred_path = f"data/REEL/{run_name}/xlinker_preds.tsv"
     predictions_df.to_csv(pred_path, sep="\t", index=False)
-    
     ppr.prepare_ppr_input(
         run_name,
         predictions_df,
@@ -174,19 +134,13 @@ if args.ppr:
 
     # Build the disambiguation graph, run PPR and process the results
     ppr.run(entity_type=args.ent_type, kb=args.kb, reel_dir=f"data/REEL/{run_name}")
-    
-    topk_accuracies = calculate_topk_accuracy(predictions_df, [1, 3, 5, 10])
-    print(f"Top-k accuracies with PPR: {topk_accuracies}")
 
 else:
     # Evaluate model performance
     pred_path = f"data/evaluation_{args.dataset}_{args.ent_type}.tsv"
     predictions_df.to_csv(pred_path, sep="\t", index=False)
-    topk_accuracies = calculate_topk_accuracy(predictions_df, [1, 3, 5, 10])
-    print(f"Top-k accuracies Without PPR: {topk_accuracies}")
+    topk_accuracies = calculate_topk_accuracy(predictions_df, [1, 5, 10, 15, 20, 25])
+    print(f"Top-k accuracies: {topk_accuracies}")
     topK_list = [list(topk_accuracies.values())]
     df = pd.DataFrame(topK_list)
     df.to_csv("data.tsv", sep="\t", index=False)
-
-end = time.time()
-print(f"{end - start} secs of running")
